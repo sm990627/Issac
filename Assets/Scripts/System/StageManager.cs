@@ -125,7 +125,7 @@ public class StageManager : GenericSingleton<StageManager>
                 {
                     GetRoom(_currentPos + Vector2.right).Load();
                     _currentPos += Vector2.right;
-                    GenericSingleton<PlayerCon>.Instance.transform.position = new Vector2(-3.75f, 0);
+                    GenericSingleton<PlayerCon>.Instance.transform.position = new Vector2(-2.7f, 0);
                      break;
                 }
             case ExitDirection.down:
@@ -140,7 +140,7 @@ public class StageManager : GenericSingleton<StageManager>
                 {
                     GetRoom(_currentPos + Vector2.left).Load();
                     _currentPos += Vector2.left;
-                    GenericSingleton<PlayerCon>.Instance.transform.position = new Vector2(3.7f, 0);
+                    GenericSingleton<PlayerCon>.Instance.transform.position = new Vector2(2.7f, 0);
                     break;
                 }
 

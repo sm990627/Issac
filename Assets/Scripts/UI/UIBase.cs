@@ -1,4 +1,7 @@
 using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+
 
 public class UIBase : GenericSingleton<UIBase>
 {
@@ -7,12 +10,19 @@ public class UIBase : GenericSingleton<UIBase>
     [SerializeField] GameObject _bossIntro;
     [SerializeField] GameObject _bossHpBar;
     [SerializeField] GameObject _miniMapUI;
+    [SerializeField] Image _blackScreen;
 
     public void Init()
     {
+        ShowMiniMap(true);
         GenerateMiniMap();
         InvenReset();
         ShowEscUI(false);
+    }
+    public void Title()
+    {
+        ShowEscUI(false);
+        ShowMiniMap(false);
     }
     public void HpBarInit()
     {
@@ -34,6 +44,10 @@ public class UIBase : GenericSingleton<UIBase>
     {
         _bossIntro.SetActive(isShow);
     }
+    public void ShowMiniMap(bool isShow)
+    {
+        _miniMapUI.SetActive(isShow);
+    }
     public void ShowBossHpBar(bool isShow)
     {
         _bossHpBar.SetActive(isShow);
@@ -53,5 +67,33 @@ public class UIBase : GenericSingleton<UIBase>
     public void InvenReset()
     {
         _escUI.GetComponent<EscUI>().Init();
+    }
+    public void FadeEffect()
+    {
+        StartCoroutine(FadeGameEffect(0.1f, 0.3f));
+    }
+    private IEnumerator FadeGameEffect(float delaytime, float fadeDuration)
+    {
+        // Display black screen
+        GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.Loading);
+        _blackScreen.gameObject.SetActive(true);
+        _blackScreen.color = Color.black;
+
+        // Wait for a brief moment
+        yield return new WaitForSeconds(delaytime);
+
+        // Fade out the black screen
+        float elapsedTime = 0;
+        Color startColor = _blackScreen.color;
+        Color endColor = new Color(0, 0, 0, 0); // Fully transparent
+        while (elapsedTime < fadeDuration)
+        {
+            _blackScreen.color = Color.Lerp(startColor, endColor, elapsedTime / fadeDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        _blackScreen.gameObject.SetActive(false); // Deactivate the black screen
+        GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.Playing);
     }
 }

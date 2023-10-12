@@ -14,8 +14,11 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     [SerializeField] int _bulletCnt = 1;
     [SerializeField] float _range = 8.0f;
     [SerializeField] float _bulletSpeed = 6.0f;
+    [SerializeField] AudioClip[] _hurtSounds;
+    [SerializeField] AudioClip _dieSound;
+    [SerializeField] AudioClip _itemGainSound;
 
-
+    AudioSource _audioSource;
     //상태관련 변수
     float axisH;
     float axisV;
@@ -57,6 +60,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     }
     void Start()
     {
+        _audioSource =GetComponent<AudioSource>();
         _rbody = GetComponent<Rigidbody2D>();
         _rend = GetComponent<SpriteRenderer>();       
     }
@@ -179,7 +183,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
             GenericSingleton<UIBase>.Instance.HpUpdate();
             if (pStat.Hp > 0)
             {
-
+                _audioSource.PlayOneShot(_hurtSounds[Random.Range(0, _hurtSounds.Length)]);
                 _rbody.velocity = new Vector2(0, 0);
                 Vector2 dirVector = (transform.position - enemy.transform.position).normalized;
                 _rbody.AddForce(new Vector2(dirVector.x * 3, dirVector.y * 3), ForceMode2D.Impulse);
@@ -189,6 +193,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
             }
             else
             {
+                _audioSource.PlayOneShot(_dieSound);
                 gameObject.SetActive(false);
             }
         }
@@ -236,6 +241,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
         {
             newItem = collision.gameObject;
             itemGain = true;
+            _audioSource.PlayOneShot(_itemGainSound);
             collision.transform.position = new Vector2(transform.position.x, transform.position.y + 0.2f); //아이템 머리위로
             gameObject.GetComponent<Animator>().SetBool("ItemGain",true);
             itemIdx.Add(collision.GetComponent<ItemIdx>().Idx); //리스트에 아이템 인덱스저장

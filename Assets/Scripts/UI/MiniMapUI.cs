@@ -20,25 +20,25 @@ public class MiniMapUI : MonoBehaviour
             {
                 GameObject roomIcon = Instantiate(roomIconPrefab[1], content);
                 RectTransform Transform = roomIcon.GetComponent<RectTransform>();
-                Transform.anchoredPosition = new Vector2(roomPosition.x * 45, roomPosition.y * 45);
+                Transform.anchoredPosition = new Vector2(roomPosition.x * 33, roomPosition.y * 33);
             }
             else
             {
                 GameObject roomIcon = Instantiate(roomIconPrefab[0], content);
                 RectTransform Transform = roomIcon.GetComponent<RectTransform>();
-                Transform.anchoredPosition = new Vector2(roomPosition.x * 45, roomPosition.y * 45);
+                Transform.anchoredPosition = new Vector2(roomPosition.x * 33, roomPosition.y * 33);
             }
             if(room.Type == RoomType.Boss)
             {
                 GameObject roomIcon = Instantiate(roomIconPrefab[2], content);
                 RectTransform Transform = roomIcon.GetComponent<RectTransform>();
-                Transform.anchoredPosition = new Vector2(roomPosition.x * 45, roomPosition.y * 45);
+                Transform.anchoredPosition = new Vector2(roomPosition.x * 33, roomPosition.y * 33);
             }
             else if (room.Type == RoomType.Treasure)
             {
                 GameObject roomIcon = Instantiate(roomIconPrefab[3], content);
                 RectTransform Transform = roomIcon.GetComponent<RectTransform>();
-                Transform.anchoredPosition = new Vector2(roomPosition.x * 45, roomPosition.y * 45);
+                Transform.anchoredPosition = new Vector2(roomPosition.x * 33, roomPosition.y * 33);
             }
         }
     }
@@ -54,25 +54,25 @@ public class MiniMapUI : MonoBehaviour
             {
                 GameObject roomIcon = Instantiate(roomIconPrefab[1], content);
                 RectTransform Transform = roomIcon.GetComponent<RectTransform>();
-                Transform.anchoredPosition = new Vector2((roomPosition.x - currentPos.x) * 45, (roomPosition.y -currentPos.y) * 45);
+                Transform.anchoredPosition = new Vector2((roomPosition.x - currentPos.x) * 33, (roomPosition.y -currentPos.y) * 33);
             }
             else
             {
                 GameObject roomIcon = Instantiate(roomIconPrefab[0], content);
                 RectTransform Transform = roomIcon.GetComponent<RectTransform>();
-                Transform.anchoredPosition = new Vector2((roomPosition.x - currentPos.x) * 45, (roomPosition.y - currentPos.y) * 45);
+                Transform.anchoredPosition = new Vector2((roomPosition.x - currentPos.x) * 33, (roomPosition.y - currentPos.y) * 33);
             }
             if (room.Type == RoomType.Boss)
             {
                 GameObject roomIcon = Instantiate(roomIconPrefab[2], content);
                 RectTransform Transform = roomIcon.GetComponent<RectTransform>();
-                Transform.anchoredPosition = new Vector2((roomPosition.x - currentPos.x) * 45, (roomPosition.y - currentPos.y) * 45);
+                Transform.anchoredPosition = new Vector2((roomPosition.x - currentPos.x) * 33, (roomPosition.y - currentPos.y) * 33);
             }
             else if (room.Type == RoomType.Treasure)
             {
                 GameObject roomIcon = Instantiate(roomIconPrefab[3], content);
                 RectTransform Transform = roomIcon.GetComponent<RectTransform>();
-                Transform.anchoredPosition = new Vector2((roomPosition.x - currentPos.x) * 45, (roomPosition.y - currentPos.y) * 45);
+                Transform.anchoredPosition = new Vector2((roomPosition.x - currentPos.x) * 33, (roomPosition.y - currentPos.y) * 33);
             }
            
         }

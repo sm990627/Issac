@@ -175,7 +175,7 @@ public class Room
         else
         {
             GenericSingleton<UIBase>.Instance.ShowBossIntro(false);          
-            GenericSingleton<GameManager>.Instance.FadeEffect();
+            GenericSingleton<UIBase>.Instance.FadeEffect();
             if (_isClear)GenericSingleton<GameManager>.Instance.DelayRoomClear();
         }
     }

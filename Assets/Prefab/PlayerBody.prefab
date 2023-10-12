@@ -104,10 +104,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxTotalHp: 12
   _maxHp: 4
-  _speed: 2
-  _power: 1
+  _speed: 5
+  _power: 10
   _attackSpeed: 0.4
-  _bulletCnt: 1
+  _bulletCnt: 4
   _range: 4
   _bulletSpeed: 4
   _bomb: {fileID: 925942407570414743, guid: 2a3081d2d70e28140bd2082ceb545d34, type: 3}

@@ -6,9 +6,12 @@ public class Monstro : GenericSingleton<Monstro>
 {
     Transform _player;
     GameObject _boss;
+    AudioSource _audioSouce;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] float _jumpSpeed = 3;
     [SerializeField] float _highJumpSpeed = 8;
+    [SerializeField] AudioClip[] _jumpSound;
+    [SerializeField] AudioClip _attackSound;
 
     [SerializeField] float _maxHp = 50;
     float _speed;
@@ -106,7 +109,8 @@ public class Monstro : GenericSingleton<Monstro>
         _player = GameObject.Find("PlayerHead").transform;
         _attCnt = _player.GetComponent<AttackCon>();
         _boss = GameObject.FindGameObjectWithTag("Boss");
-        _animator = GetComponent<Animator>();   
+        _animator = GetComponent<Animator>();
+        _audioSouce = GetComponent<AudioSource>();
         _ren = _boss.GetComponent<SpriteRenderer>();
         _currentState = BossState.Spawn;
         _hp = _maxHp;
@@ -173,11 +177,17 @@ public class Monstro : GenericSingleton<Monstro>
         _firePos.transform.LookAt(dirVector);
 
         _AttackParticle.Play();
+        _audioSouce.PlayOneShot(_attackSound);
 
     }
     void Landing()
     {
         _LandingParticle.Play();
+        _audioSouce.PlayOneShot(_jumpSound[UnityEngine.Random.Range(0, _jumpSound.Length)]);
+    }
+    public void JumpSound()
+    {
+        _audioSouce.PlayOneShot(_jumpSound[UnityEngine.Random.Range(0,_jumpSound.Length)]);
     }
     public void OnDamage()
     {

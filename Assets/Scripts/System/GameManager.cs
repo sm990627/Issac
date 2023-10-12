@@ -1,4 +1,4 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,22 +7,20 @@ using UnityEngine.UI;
 
 public class GameManager : GenericSingleton<GameManager>
 {
-    [SerializeField] Image blackScreen;
-    [SerializeField] float fadeDuration = 1.0f;
-    [SerializeField] float delayBeforeFadeOut = 1.0f;
-    [SerializeField] GameObject[] _pickUpItems;
 
     Dictionary<Vector2, Room> _rooms;
     float _restartTimer;
     bool _escUI;
-    GameState _currentState;
+    [SerializeField]GameState _currentState;
     public GameState CurrentState { get { return _currentState; } }
  
 
 
     public enum GameState
     {
+        Title,
         Loading,
+        GameStart,
         Playing,
         NoEnemies,
         Pause,
@@ -36,8 +34,15 @@ public class GameManager : GenericSingleton<GameManager>
 
         switch (newState)
         {
+            case GameState.Title:
+                break;
+
             case GameState.Loading:
                 
+                break;
+
+            case GameState.GameStart:
+                GameStart();
                 break;
 
             case GameState.Playing:
@@ -73,55 +78,65 @@ public class GameManager : GenericSingleton<GameManager>
     }
     protected override void OnAwake()                                      
     {
-        _rooms = GenericSingleton<RoomManager>.Instance.Init();                              
-        GenericSingleton<StageManager>.Instance.Init();                                                
-        GenericSingleton<Doors>.Instance.DoorOpen();                       
-        GenericSingleton<PlayerCon>.Instance.Init();                        
-        GenericSingleton<AttackCon>.Instance.Init();      
+        SetGameState(_currentState);
+
+    }
+    public void GameStart()
+    {
+        //nstantiate(_roomManager);
+        _rooms = GenericSingleton<RoomManager>.Instance.Init();
+        //Instantiate(_stageManager);
+        GenericSingleton<StageManager>.Instance.Init();
+        //Instantiate(_doors);
+        GenericSingleton<Doors>.Instance.DoorOpen();
+        //Instantiate(_player);
+        GenericSingleton<PlayerCon>.Instance.Init();
+        GenericSingleton<AttackCon>.Instance.Init();
+        //Instantiate(_uiBase);
         GenericSingleton<UIBase>.Instance.Init();
         GenericSingleton<UIBase>.Instance.HpBarInit();
         _currentState = GameState.Loading;
-
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (_currentState == GameState.Playing || _currentState == GameState.NoEnemies)
         {
-            if (!_escUI)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                SetGameState(GameState.Pause);
-                GenericSingleton<UIBase>.Instance.ShowEscUI(true);
-                _escUI = true;
+                if (!_escUI)
+                {
+                    SetGameState(GameState.Pause);
+                    GenericSingleton<UIBase>.Instance.ShowEscUI(true);
+                    _escUI = true;
+                }
+                else
+                {
+                    SetGameState(GameState.Playing);
+                    GenericSingleton<UIBase>.Instance.ShowEscUI(false);
+                    _escUI = false;
+                }
             }
-            else
+            if (Input.GetKey(KeyCode.R))
             {
-                SetGameState(GameState.Playing);
-                GenericSingleton<UIBase>.Instance.ShowEscUI(false);
-                _escUI = false;
+                _restartTimer += Time.deltaTime;
+                if (_restartTimer > 2)
+                {
+                    Debug.Log("재시작");
+                    _restartTimer = 0;
+                    Restart();
+                }
             }
-        }
-        if (Input.GetKey(KeyCode.R))
-        {
-            _restartTimer += Time.deltaTime;
-            if (_restartTimer > 2)
+            if (Input.GetKey(KeyCode.L))
             {
-                Debug.Log("재시작");
+                RoomClear();
+            }
+            if (Input.GetKeyUp(KeyCode.R))
+            {
                 _restartTimer = 0;
-                Restart();
             }
-        }
-        if (Input.GetKey(KeyCode.L))
-        {
-            RoomClear();
-        }
-        if (Input.GetKeyUp(KeyCode.R))
-        {
-            _restartTimer = 0;
         }
 
-        
-     
     }
     
     
@@ -164,38 +179,11 @@ public class GameManager : GenericSingleton<GameManager>
             enemy.SetActive(false);
         }
     }
-    public void FadeEffect()
-    {
-        StartCoroutine(FadeGameEffect(0.1f,0.3f));
-    }
     public void DelayRoomClear()
     {   
         Invoke("RoomClear", 0.01f);
     }
 
 
-    private IEnumerator FadeGameEffect(float delaytime, float fadeDuration)
-    {
-        // Display black screen
-        SetGameState(GameState.Loading);
-        blackScreen.gameObject.SetActive(true);
-        blackScreen.color = Color.black;
-
-        // Wait for a brief moment
-        yield return new WaitForSeconds(delaytime);
-
-        // Fade out the black screen
-        float elapsedTime = 0;
-        Color startColor = blackScreen.color;
-        Color endColor = new Color(0, 0, 0, 0); // Fully transparent
-        while (elapsedTime < fadeDuration)
-        {
-            blackScreen.color = Color.Lerp(startColor, endColor, elapsedTime / fadeDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-  
-        blackScreen.gameObject.SetActive(false); // Deactivate the black screen
-        SetGameState(GameState.Playing);
-    }
+    
 }

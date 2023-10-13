@@ -17,6 +17,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     [SerializeField] AudioClip[] _hurtSounds;
     [SerializeField] AudioClip _dieSound;
     [SerializeField] AudioClip _itemGainSound;
+    [SerializeField] AudioClip _healSound;
 
     AudioSource _audioSource;
     //상태관련 변수
@@ -67,7 +68,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     
     void Update()
     {
-        if (GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.Playing || GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.NoEnemies)
+        if (GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.EnemiesOn || GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.EnemiesOff)
         {
             axisH = Input.GetAxisRaw("Horizontal");
             axisV = Input.GetAxisRaw("Vertical");
@@ -115,7 +116,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     }
     void FixedUpdate()
     {
-        if (GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.Playing || GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.NoEnemies)
+        if (GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.EnemiesOn || GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.EnemiesOff)
         {
             if (inDamage)
             {
@@ -161,8 +162,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
             float dx = v2.x - v1.x;
             float dy = v2.y - v1.y;
             float rad = Mathf.Atan2(dy, dx);
-            angle = Mathf.Rad2Deg * rad;
-            
+            angle = Mathf.Rad2Deg * rad;         
         }
         else
         {
@@ -201,6 +201,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     void Heal(float amount)
     {
         pStat.Hp = pStat.Hp + amount;
+        _audioSource.PlayOneShot(_healSound);
         if (pStat.Hp >= pStat.MaxHp)
         {
             pStat.Hp = pStat.MaxHp;
@@ -274,7 +275,8 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     void ItemGainEnd()
     {
         newItem.SetActive(false);
-        itemGain = false;
+        GenericSingleton<StageManager>.Instance.CurrentRoom.TreasureItemClear();
+       itemGain = false;
         gameObject.GetComponent<Animator>().SetBool("ItemGain", false);
         _player.GetComponent<SpriteRenderer>().enabled = true;
     }

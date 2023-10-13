@@ -25,38 +25,43 @@ public class TitleManager : MonoBehaviour
     }
     void Update()
     {
-        if (!_isTitle && !_isMove)
+        if(!GenericSingleton<UIBase>.Instance.OptionUI.activeSelf)
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow))
+            if (!_isTitle && !_isMove)
             {
-                MoveArrowUp();
-            }
+                if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    MoveArrowUp();
+                }
 
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                MoveArrowDown();
-            }
+                if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    MoveArrowDown();
+                }
 
-            if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    CurrentUI();
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Space) && !_isMove && _isTitle)
             {
-                ExecuteCurrentUI();
+                StartCoroutine(GameStartMenu());
+            }
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                if (!_isMove && !_isTitle)
+                {
+                    StartCoroutine(TitleBack());
+                }
+                if (!_isMove && _isTitle)
+                {
+                    Debug.Log("게임종료");
+                }
             }
         }
-        if (Input.GetKeyDown(KeyCode.Space) && !_isMove &&_isTitle)
-        {
-            StartCoroutine(GameStartMenu());
-        }
-        if (Input.GetKeyUp(KeyCode.Escape))
-        {
-            if(!_isMove && !_isTitle)
-            {
-                StartCoroutine(TitleBack());
-            }
-            if(!_isMove && _isTitle)
-            {
-                Debug.Log("게임종료");
-            }
-        }
+       
+        
         
     }
 
@@ -131,29 +136,44 @@ public class TitleManager : MonoBehaviour
 
     void UpdateArrowPosition()
     {
-        _arrow.anchoredPosition = _menus[_currentIdx].anchoredPosition + new Vector2(-240f, -40f); 
+        _arrow.anchoredPosition = _menus[_currentIdx].anchoredPosition + new Vector2(-140f, -20f); 
     }
 
-    void ExecuteCurrentUI()
+    void CurrentUI()
     {
         switch (_currentIdx)
         {
             case 0:
-                LoadSceneAsync();
+                {
+                    LoadSceneAsync();
+                }
+                break;
+            case 1:
+                {
+                    //로드
+                }
+                break;
+            case 2:
+                {
+                    GenericSingleton<UIBase>.Instance.ShowOptionUI(true);
+                }
                 break;
         }
     }
     public void LoadSceneAsync()
     {
         _async = SceneManager.LoadSceneAsync("Basement0");
+
         _async.completed += OnLoadComplete;
-        _async.allowSceneActivation = false; 
+        _async.allowSceneActivation = true;
+        //_async.allowSceneActivation = false; 
     }
+
+    
 
     private void OnLoadComplete(AsyncOperation obj)
     {
         Debug.Log("로딩이 완료되었습니다.");
-        _async.allowSceneActivation = true;
         GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.GameStart);
     }
 }

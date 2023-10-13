@@ -152,17 +152,21 @@ public class Room
     public PickUpItems _pickUpItem = PickUpItems.Default;
     string _sceneName;
     RoomType _type;
-    GameObject[] _doors;
+    int _treasureIdx;
+    public int TreasureIdx { get { return _treasureIdx; } }
     bool _isClear;
     public bool IsClear { get { return _isClear; } }    
-    public GameObject[] Doors { get { return _doors; } }
     public RoomType Type { get { return _type; } }
     public Room(string sceneName, RoomType type)
     {
         _sceneName = sceneName;
         _type = type;
+        _treasureIdx = Random.Range(0, 4);
     }
-
+    public void TreasureItemClear()
+    {
+        _treasureIdx = -1;
+    }
     public void Load()
     {
         SceneManager.LoadScene(_sceneName);
@@ -191,10 +195,18 @@ public class Room
 
     public void SetClear()
     {
-        _isClear = true;
-        if (_type != RoomType.Start && _type != RoomType.Treasure)
+        
+        if (_type != RoomType.Start && _type != RoomType.Treasure && _type != RoomType.Boss)
         {
-            SetPickUpItem();
+            if (!_isClear)
+            {
+                _isClear = true;
+                SetPickUpItem();
+            }
+        }
+        else
+        {
+            _isClear = true;
         }
         
     }

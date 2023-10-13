@@ -11,7 +11,10 @@ public class ItemSpawn : MonoBehaviour
         {
             item.SetActive(false);
         }
-        _items[Random.Range(0, _items.Length)].SetActive(true);
+        if (GenericSingleton<StageManager>.Instance.CurrentRoom.TreasureIdx != -1)
+        {
+            _items[GenericSingleton<StageManager>.Instance.CurrentRoom.TreasureIdx].SetActive(true);
+        }
 
     }
 

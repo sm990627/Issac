@@ -27,8 +27,8 @@ public class StageManager : GenericSingleton<StageManager>
         _rightDoor = GenericSingleton<Doors>.Instance.GetComponent<Doors>()._doors[1];
         _downDoor = GenericSingleton<Doors>.Instance.GetComponent<Doors>()._doors[2];
         _leftDoor = GenericSingleton<Doors>.Instance.GetComponent<Doors>()._doors[3];
-        DoorInit();
         ResetCurrentPos();
+        DoorInit();
         GenericSingleton<Doors>.Instance.GetComponent<Doors>().DoorOpen();
     }
     public void ResetCurrentPos()
@@ -36,6 +36,7 @@ public class StageManager : GenericSingleton<StageManager>
         _currentPos = Vector2.zero;
         if (_rooms.TryGetValue(_currentPos, out Room room)) _currentRoom = room;
         room.Load();
+        GenericSingleton<PickUpItemManager>.Instance.UpdatePickUpItem();
     }
     public void DoorInit()
     {
@@ -147,6 +148,7 @@ public class StageManager : GenericSingleton<StageManager>
         }
         DoorInit();
         if (_rooms.TryGetValue(_currentPos, out Room room)) _currentRoom = room;
+        GenericSingleton<PickUpItemManager>.Instance.UpdatePickUpItem();
         GenericSingleton<UIBase>.Instance.UpdateMiniMap();
     }
 

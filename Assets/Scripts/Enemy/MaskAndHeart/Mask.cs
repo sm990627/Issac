@@ -51,8 +51,7 @@ public class Mask : MonoBehaviour
                 moveVector = dirPlayer;
                 _moveSpeed = _dashSpeed;
                 _isChase = true;
-                Debug.Log("ÃßÀûÁß");
-                Debug.Log(_moveSpeed);
+
                 break;
             }
             else

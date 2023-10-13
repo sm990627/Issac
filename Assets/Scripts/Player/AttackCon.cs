@@ -56,22 +56,26 @@ public class AttackCon : GenericSingleton<AttackCon>
 
     void Update()
     {
-        FireX = Input.GetAxisRaw("FireX");
-        FireY = Input.GetAxisRaw("FireY");
-        Vector2 fromPt2 = transform.position;
-        Vector2 toPt2 = new Vector2(fromPt2.x + FireX, fromPt2.y + FireY);
-        angleA = GetAngleA(fromPt2, toPt2);
-        if ((FireX != 0 || FireY != 0) && inAttack == false)
+        if(GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.EnemiesOn || GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.EnemiesOff)
         {
-            Attack();
-            AttackAnime(angleA);
-            Invoke("StopAttack", _attackSpeed);
+            FireX = Input.GetAxisRaw("FireX");
+            FireY = Input.GetAxisRaw("FireY");
+            Vector2 fromPt2 = transform.position;
+            Vector2 toPt2 = new Vector2(fromPt2.x + FireX, fromPt2.y + FireY);
+            angleA = GetAngleA(fromPt2, toPt2);
+            if ((FireX != 0 || FireY != 0) && inAttack == false)
+            {
+                Attack();
+                AttackAnime(angleA);
+                Invoke("StopAttack", _attackSpeed);
 
+            }
+            else if (FireX != 0 || FireY != 0)
+            {
+                GetComponent<Animator>().SetBool("isIdle", true);
+            }
         }
-        else if (FireX != 0 || FireY != 0)
-        {
-            GetComponent<Animator>().SetBool("isIdle", true);
-        }
+        
 
 
     }

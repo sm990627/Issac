@@ -13,24 +13,25 @@ public class GameManager : GenericSingleton<GameManager>
     bool _escUI;
     [SerializeField]GameState _currentState;
     public GameState CurrentState { get { return _currentState; } }
- 
 
 
+    GameState _lastState;
     public enum GameState
     {
-        Title,
+        Title ,
         Loading,
         GameStart,
         Playing,
-        NoEnemies,
-        Pause,
         GameOver,
-        GameClear
+        GameClear,
+        EnemiesOff = 100,
+        EnemiesOn  = 101,
+        Pause      = 102,
     }
 
     public void SetGameState(GameState newState)
     {
-        _currentState = newState;
+        if (_currentState != newState) _currentState = newState;
 
         switch (newState)
         {
@@ -42,35 +43,49 @@ public class GameManager : GenericSingleton<GameManager>
                 break;
 
             case GameState.GameStart:
-                GameStart();
+                {
+                    GameStart();
+                }
                 break;
 
             case GameState.Playing:
-                Time.timeScale = 1;
-                CheckState();
+                {
+                    Time.timeScale = 1;
+                    CheckState();
+                }
+                break;
+            case GameState.EnemiesOn:
+                {
+                    Time.timeScale = 1;
+                    GenericSingleton<Doors>.Instance.DoorClose();
+                }
+                break;
+
+            case GameState.EnemiesOff:
+                {
+                    Time.timeScale = 1;
+                    GenericSingleton<StageManager>.Instance.CurrentRoom.SetClear();
+                    GenericSingleton<Doors>.Instance.DoorOpen();
+                }
                 
                 break;
 
-            case GameState.NoEnemies:
-                Time.timeScale = 1;
-                SetClear();
-                GenericSingleton<Doors>.Instance.DoorOpen();
-                break;
-
             case GameState.Pause:
-                Time.timeScale = 0;
-
+                {
+                    Time.timeScale = 0;
+                }
                 break;
 
             case GameState.GameOver:
-                Time.timeScale = 0;
-
-
+                {
+                    Time.timeScale = 0; 
+                }
                 break;
 
             case GameState.GameClear:
-                Time.timeScale = 1;
-
+                {
+                    Time.timeScale = 1;
+                }
                 break;
 
         }
@@ -83,16 +98,11 @@ public class GameManager : GenericSingleton<GameManager>
     }
     public void GameStart()
     {
-        //nstantiate(_roomManager);
         _rooms = GenericSingleton<RoomManager>.Instance.Init();
-        //Instantiate(_stageManager);
         GenericSingleton<StageManager>.Instance.Init();
-        //Instantiate(_doors);
         GenericSingleton<Doors>.Instance.DoorOpen();
-        //Instantiate(_player);
         GenericSingleton<PlayerCon>.Instance.Init();
         GenericSingleton<AttackCon>.Instance.Init();
-        //Instantiate(_uiBase);
         GenericSingleton<UIBase>.Instance.Init();
         GenericSingleton<UIBase>.Instance.HpBarInit();
         _currentState = GameState.Loading;
@@ -100,42 +110,48 @@ public class GameManager : GenericSingleton<GameManager>
 
     private void Update()
     {
-        if (_currentState == GameState.Playing || _currentState == GameState.NoEnemies)
+        if (((int)_currentState) >= 100)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (!_escUI)
                 {
+                    _lastState = _currentState;
                     SetGameState(GameState.Pause);
                     GenericSingleton<UIBase>.Instance.ShowEscUI(true);
                     _escUI = true;
                 }
                 else
                 {
-                    SetGameState(GameState.Playing);
+                    SetGameState(_lastState);
                     GenericSingleton<UIBase>.Instance.ShowEscUI(false);
                     _escUI = false;
                 }
             }
-            if (Input.GetKey(KeyCode.R))
+            if (_currentState != GameState.Pause)
             {
-                _restartTimer += Time.deltaTime;
-                if (_restartTimer > 2)
+                if (Input.GetKey(KeyCode.R))
                 {
-                    Debug.Log("재시작");
+                    _restartTimer += Time.deltaTime;
+                    if (_restartTimer > 2)
+                    {
+                        Debug.Log("재시작");
+                        _restartTimer = 0;
+                        Restart();
+                    }
+                }
+                if (Input.GetKey(KeyCode.L))
+                {
+                    RoomClear();
+                }
+                if (Input.GetKeyUp(KeyCode.R))
+                {
                     _restartTimer = 0;
-                    Restart();
                 }
             }
-            if (Input.GetKey(KeyCode.L))
-            {
-                RoomClear();
-            }
-            if (Input.GetKeyUp(KeyCode.R))
-            {
-                _restartTimer = 0;
-            }
+           
         }
+        
 
     }
     
@@ -145,8 +161,7 @@ public class GameManager : GenericSingleton<GameManager>
         GenericSingleton<RoomManager>.Instance.Init();                     
         _rooms = GenericSingleton<RoomManager>.Instance.Rooms;                                    
         RoomClear();
-        GenericSingleton<StageManager>.Instance.ResetCurrentPos();                   
-        GenericSingleton<StageManager>.Instance.DoorInit();
+        GenericSingleton<StageManager>.Instance.Init();
         GenericSingleton<PlayerCon>.Instance.Init();                       
         GenericSingleton<AttackCon>.Instance.Init();                                         
         GenericSingleton<UIBase>.Instance.Init();
@@ -157,22 +172,19 @@ public class GameManager : GenericSingleton<GameManager>
     {
         if (GameObject.FindGameObjectWithTag("Enemy") == null && GameObject.FindGameObjectWithTag("Boss") == null)
         {
-            SetGameState(GameState.NoEnemies);
+            SetGameState(GameState.EnemiesOff);
         }
         else
         {
-            Debug.Log("문닫기");
-            GenericSingleton<Doors>.Instance.DoorClose();
+            SetGameState(GameState.EnemiesOn);
         }
+
     }
-    void SetClear()   //방 클리어로 만들기
-    {
-        GenericSingleton<StageManager>.Instance.CurrentRoom.SetClear();
-    }
+
 
     void RoomClear()
     {
-        SetGameState(GameState.NoEnemies);
+        SetGameState(GameState.EnemiesOff);
         GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject enemy in enemys)
         {

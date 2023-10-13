@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 4835431763018938949}
   - component: {fileID: 4835431763018938948}
   - component: {fileID: 4835431763018938970}
-  m_Layer: 12
+  m_Layer: 18
   m_Name: Mask's Heart
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -174,9 +174,6 @@ MonoBehaviour:
   _attackSpeed: 3
   _bulletSpeed: 6
   _bullet: {fileID: 2529642605252773737, guid: 4f010309183bd7349ac2f09d3e4c161b, type: 3}
-  _pickUpItems:
-  - {fileID: 4143507422464115543, guid: 6eafd04d2bca85f46883e9662273a64a, type: 3}
-  - {fileID: 1342558426124075644, guid: 7d28197af69916f40b8336876b44c049, type: 3}
 --- !u!1 &4835431763942647716
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,7 +188,7 @@ GameObject:
   - component: {fileID: 4835431763942647738}
   - component: {fileID: 4835431763942647737}
   - component: {fileID: 4835431763942647743}
-  m_Layer: 12
+  m_Layer: 17
   m_Name: Mask
   m_TagString: Enemy
   m_Icon: {fileID: 0}

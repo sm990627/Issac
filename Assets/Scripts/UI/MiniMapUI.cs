@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class MiniMapUI : MonoBehaviour
 {
-    [SerializeField] GameObject[] roomIconPrefab; // 방을 나타내는 아이콘 프리팹
-    [SerializeField] RectTransform content;      // 스크롤뷰의 Content Transform
+    [SerializeField] GameObject[] roomIconPrefab; 
+    [SerializeField] RectTransform content;      
     Dictionary<Vector2, Room> rooms;
 
 
@@ -40,6 +40,8 @@ public class MiniMapUI : MonoBehaviour
                 RectTransform Transform = roomIcon.GetComponent<RectTransform>();
                 Transform.anchoredPosition = new Vector2(roomPosition.x * 33, roomPosition.y * 33);
             }
+            
+             
         }
     }
     public void UpdateMiniMap()
@@ -74,7 +76,13 @@ public class MiniMapUI : MonoBehaviour
                 RectTransform Transform = roomIcon.GetComponent<RectTransform>();
                 Transform.anchoredPosition = new Vector2((roomPosition.x - currentPos.x) * 33, (roomPosition.y - currentPos.y) * 33);
             }
-           
+            if ((int)room._pickUpItem >= 2 && (int)room._pickUpItem <= 4)
+            {
+                GameObject roomIcon = Instantiate(roomIconPrefab[4], content);
+                RectTransform Transform = roomIcon.GetComponent<RectTransform>();
+                Transform.anchoredPosition = new Vector2((roomPosition.x - currentPos.x) * 33, (roomPosition.y - currentPos.y) * 33);
+            }
+
         }
     }
     void ClearMap()

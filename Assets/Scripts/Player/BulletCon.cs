@@ -2,25 +2,29 @@ using UnityEngine;
 
 public class BulletCon : MonoBehaviour
 {
-    float deleteTime;
-    Rigidbody2D rb;
-    bool gravity;
-    Animator animator;
-    AudioSource audioSource;
+    float _deleteTime;
+    Rigidbody2D _rb;
+    bool _gravity;
+    Animator _animator;
+    AudioSource _audioSource;
+    GameObject _player;
+    AttackCon _attcnt;
     [SerializeField] AudioClip[] _tearPop;
-    bool flag;
-    string[] animes = { "DestroyA", "DestroyB" };
+    bool _flag;
+    string[] _animes = { "DestroyA", "DestroyB" };
+
     void OnEnable()
     {
-        audioSource =GetComponent<AudioSource>();
-        animator = GetComponent<Animator>();
-        GameObject player = GameObject.Find("PlayerHead");
-        AttackCon attcnt = player.GetComponent<AttackCon>();
-        deleteTime = attcnt.GetRange() / attcnt.GetBulletSpeed();
-        Invoke("GravityOn",deleteTime - 0.5f);
-        Invoke("BulletDestroy", deleteTime);
-        rb = GetComponent<Rigidbody2D>();
-
+        _audioSource = GetComponent<AudioSource>();
+        _animator = GetComponent<Animator>();
+        _player = GameObject.Find("PlayerHead");
+        _attcnt = _player.GetComponent<AttackCon>();
+        GenericSingleton<UIBase>.Instance.EffectVolume += EffectSound;
+        GenericSingleton<UIBase>.Instance.SoundInit();
+        _deleteTime = _attcnt.GetRange() /_attcnt.GetBulletSpeed();
+        Invoke("GravityOn",_deleteTime - 0.5f);
+        Invoke("BulletDestroy", _deleteTime);
+        _rb = GetComponent<Rigidbody2D>();
     }
 
    
@@ -30,24 +34,25 @@ public class BulletCon : MonoBehaviour
     }
     void GravityOn()
     {
-        gravity = true;
+        _gravity = true;
     }
     void BulletDestroy()
     {
-        if (!flag)
+        if (!_flag)
         {
-            rb.velocity = Vector3.zero;
-            flag = true;
-            gravity = false;
-            audioSource.PlayOneShot(_tearPop[Random.RandomRange(0,_tearPop.Length)]);
-            animator.Play(animes[Random.RandomRange(0,2)]);
+            _rb.velocity = Vector3.zero;
+            _flag = true;
+            _gravity = false;
+            _audioSource.PlayOneShot(_tearPop[Random.Range(0,_tearPop.Length)]);
+            _animator.Play(_animes[Random.Range(0,2)]);
+            GenericSingleton<UIBase>.Instance.EffectVolume -= EffectSound;
             Invoke("BulletOff",0.3f);
             Invoke("FlagOff", 0.5f);
         }
     }
     void FlagOff()
     {
-        flag = false;
+        _flag = false;
     }
     void BulletOff()
     {
@@ -55,9 +60,15 @@ public class BulletCon : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (gravity)
+        if (_gravity)
         {
-            rb.velocity += Physics2D.gravity * Time.fixedDeltaTime * 0.3f;
+            _rb.velocity += Physics2D.gravity * Time.fixedDeltaTime * 0.3f;
         }
     }
+    void EffectSound(float value)
+    {
+        _audioSource.volume = value;
+    }
+
+
 }

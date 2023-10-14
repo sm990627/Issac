@@ -62,6 +62,8 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     void Start()
     {
         _audioSource =GetComponent<AudioSource>();
+        GenericSingleton<UIBase>.Instance.EffectVolume += EffectSound;
+        GenericSingleton<UIBase>.Instance.SoundInit();
         _rbody = GetComponent<Rigidbody2D>();
         _rend = GetComponent<SpriteRenderer>();       
     }
@@ -280,7 +282,22 @@ public class PlayerCon : GenericSingleton<PlayerCon>
         gameObject.GetComponent<Animator>().SetBool("ItemGain", false);
         _player.GetComponent<SpriteRenderer>().enabled = true;
     }
+    public void GameClear()
+    {
+        transform.position = new Vector3(0,0.2f,0);
+        GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+        gameObject.GetComponent<Animator>().Play("Clear");
+        GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.GameClear);
+    }
 
-   
+    void EffectSound(float value)
+    {
+        _audioSource.volume = value;
+    }
+    private void OnDestroy()
+    {
+        GenericSingleton<UIBase>.Instance.EffectVolume -= EffectSound;
+    }
+
 }
 

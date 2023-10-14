@@ -118,4 +118,9 @@ public class OptionUI : MonoBehaviour
                 break;
         }
     }
+    public void SoundInit()
+    {
+        GenericSingleton<UIBase>.Instance.EffectSound(_sfxIdx * 0.1f);
+        GenericSingleton<UIBase>.Instance.MusicSound(_musicIdx * 0.1f);
+    }
 }

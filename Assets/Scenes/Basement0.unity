@@ -297,12 +297,12 @@ PrefabInstance:
     - target: {fileID: 8417352756320077195, guid: bfdfa922a9a19a0429dfd990f8be1891,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.02
+      value: 1.322
       objectReference: {fileID: 0}
     - target: {fileID: 8417352756320077195, guid: bfdfa922a9a19a0429dfd990f8be1891,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.52
+      value: 0.209
       objectReference: {fileID: 0}
     - target: {fileID: 8417352756320077195, guid: bfdfa922a9a19a0429dfd990f8be1891,
         type: 3}
@@ -344,45 +344,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8417352756320077197, guid: bfdfa922a9a19a0429dfd990f8be1891,
-        type: 3}
-      propertyPath: _dieSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 8d58ef4a94adccd45bf4a7b3e757211b, type: 3}
-    - target: {fileID: 8417352756320077197, guid: bfdfa922a9a19a0429dfd990f8be1891,
-        type: 3}
-      propertyPath: _healSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 8e32a35d77476dd4a8cfa26b79342568, type: 3}
-    - target: {fileID: 8417352756320077197, guid: bfdfa922a9a19a0429dfd990f8be1891,
-        type: 3}
-      propertyPath: _itemGainSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 18ea5e09a37d4304586d0edc3baae1d4, type: 3}
-    - target: {fileID: 8417352756320077197, guid: bfdfa922a9a19a0429dfd990f8be1891,
-        type: 3}
-      propertyPath: _hurtSounds.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8417352756320077197, guid: bfdfa922a9a19a0429dfd990f8be1891,
-        type: 3}
-      propertyPath: _hurtSounds.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 24d38f25d6d66554987a04dc9c8bc326, type: 3}
-    - target: {fileID: 8417352756320077197, guid: bfdfa922a9a19a0429dfd990f8be1891,
-        type: 3}
-      propertyPath: _hurtSounds.Array.data[1]
-      value: 
-      objectReference: {fileID: 8300000, guid: 91269ee8d3ae1a84c900efa068f87773, type: 3}
-    - target: {fileID: 8417352756320077197, guid: bfdfa922a9a19a0429dfd990f8be1891,
-        type: 3}
-      propertyPath: _hurtSounds.Array.data[2]
-      value: 
-      objectReference: {fileID: 8300000, guid: 1165ecf2766185448a4152e01e4a7cf8, type: 3}
     - target: {fileID: 8417352756320077297, guid: bfdfa922a9a19a0429dfd990f8be1891,
         type: 3}
       propertyPath: m_Name
       value: PlayerBody
+      objectReference: {fileID: 0}
+    - target: {fileID: 8417352756320077297, guid: bfdfa922a9a19a0429dfd990f8be1891,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfdfa922a9a19a0429dfd990f8be1891, type: 3}
@@ -405,6 +375,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 419752023, guid: 999b30bd331960f419e29b4603e9d688, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6142483675000959888, guid: 999b30bd331960f419e29b4603e9d688,
         type: 3}
       propertyPath: m_RootOrder
@@ -541,108 +515,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 885956008}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1212756565 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8417352756320077297, guid: bfdfa922a9a19a0429dfd990f8be1891,
-    type: 3}
-  m_PrefabInstance: {fileID: 703121330}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &1212756572
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1212756565}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 0.5
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1001 &1435891634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -654,6 +526,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UIBase
+      objectReference: {fileID: 0}
+    - target: {fileID: 7499531857746351450, guid: e5982e3991a3553438afd651396c251b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7499531859057890107, guid: e5982e3991a3553438afd651396c251b,
         type: 3}
@@ -981,6 +858,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Tiles.Array.data[15].second.m_TileSpriteIndex
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 310222691852251355, guid: 7175ba88ba2e1df41bbb34b1b8164c47,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 310222692771886858, guid: 7175ba88ba2e1df41bbb34b1b8164c47,
         type: 3}

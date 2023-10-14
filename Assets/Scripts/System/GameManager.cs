@@ -91,9 +91,15 @@ public class GameManager : GenericSingleton<GameManager>
         }
         Debug.Log(_currentState);
     }
+    public void Title()
+    {
+        SetGameState(GameState.Title);
+        GenericSingleton<PlayerCon>.Instance.gameObject.SetActive(false);
+        GenericSingleton<UIBase>.Instance.Title();
+    }
     protected override void OnAwake()                                      
     {
-        SetGameState(_currentState);
+        Title();
 
     }
     public void GameStart()
@@ -101,10 +107,12 @@ public class GameManager : GenericSingleton<GameManager>
         _rooms = GenericSingleton<RoomManager>.Instance.Init();
         GenericSingleton<StageManager>.Instance.Init();
         GenericSingleton<Doors>.Instance.DoorOpen();
+        GenericSingleton<PlayerCon>.Instance.gameObject.SetActive(true);
         GenericSingleton<PlayerCon>.Instance.Init();
         GenericSingleton<AttackCon>.Instance.Init();
         GenericSingleton<UIBase>.Instance.Init();
         GenericSingleton<UIBase>.Instance.HpBarInit();
+        GenericSingleton<SoundManager>.Instance.SetBasement();
         _currentState = GameState.Loading;
     }
 
@@ -121,11 +129,9 @@ public class GameManager : GenericSingleton<GameManager>
                     GenericSingleton<UIBase>.Instance.ShowEscUI(true);
                     _escUI = true;
                 }
-                else
+                else if(!GenericSingleton<UIBase>.Instance.OptionUI.activeSelf)
                 {
-                    SetGameState(_lastState);
-                    GenericSingleton<UIBase>.Instance.ShowEscUI(false);
-                    _escUI = false;
+                    ResumeGame();
                 }
             }
             if (_currentState != GameState.Pause)
@@ -154,7 +160,12 @@ public class GameManager : GenericSingleton<GameManager>
         
 
     }
-    
+    public void ResumeGame()
+    {
+        SetGameState(_lastState);
+        GenericSingleton<UIBase>.Instance.ShowEscUI(false);
+        _escUI = false;
+    }
     
     void Restart() 
     {                             
@@ -193,7 +204,7 @@ public class GameManager : GenericSingleton<GameManager>
     }
     public void DelayRoomClear()
     {   
-        Invoke("RoomClear", 0.01f);
+        Invoke("RoomClear", 0.2f);
     }
 
 

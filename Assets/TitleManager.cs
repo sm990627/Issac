@@ -22,6 +22,8 @@ public class TitleManager : MonoBehaviour
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
+        GenericSingleton<UIBase>.Instance.EffectVolume += EffectSound;
+        GenericSingleton<UIBase>.Instance.SoundInit();
     }
     void Update()
     {
@@ -48,7 +50,7 @@ public class TitleManager : MonoBehaviour
             {
                 StartCoroutine(GameStartMenu());
             }
-            if (Input.GetKeyUp(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (!_isMove && !_isTitle)
                 {
@@ -175,5 +177,13 @@ public class TitleManager : MonoBehaviour
     {
         Debug.Log("로딩이 완료되었습니다.");
         GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.GameStart);
+    }
+    void EffectSound(float value)
+    {
+        _audioSource.volume = value;
+    }
+    private void OnDestroy()
+    {
+        GenericSingleton<UIBase>.Instance.EffectVolume -= EffectSound;
     }
 }

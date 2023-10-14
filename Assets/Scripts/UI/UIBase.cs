@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class UIBase : GenericSingleton<UIBase>
@@ -47,10 +48,6 @@ public class UIBase : GenericSingleton<UIBase>
             {
                 EscUISelectedMenu();
             }
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                ShowEscUI(false);
-            }
         }
         else if ( _optionUI.activeSelf)  //optionUIÄÁÆ®·Ñ
         {
@@ -71,13 +68,18 @@ public class UIBase : GenericSingleton<UIBase>
             {
                 OptionArrowRight();
             }
-            if (Input.GetKeyUp(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 ShowOptionUI(false);
             }
 
         }
         
+    }
+    public void GoTitle()
+    {
+        GenericSingleton<GameManager>.Instance.Title();
+        SceneManager.LoadSceneAsync("TitleScene");
     }
 
     public void Init()
@@ -114,6 +116,10 @@ public class UIBase : GenericSingleton<UIBase>
     {
         _bossIntro.SetActive(isShow);
     }
+    public void BossIntroSound()
+    {
+        _audioSource.PlayOneShot(_uiSound[2]);
+    }
     public void ShowOptionUI(bool isShow)
     {
         _optionUI.SetActive(isShow);
@@ -144,7 +150,7 @@ public class UIBase : GenericSingleton<UIBase>
     }
     public void FadeEffect()
     {
-        StartCoroutine(FadeGameEffect(0.1f, 0.3f));
+        StartCoroutine(FadeGameEffect(0.3f, 0.5f));
     }
 
     public void EscArrowUp()
@@ -207,6 +213,10 @@ public class UIBase : GenericSingleton<UIBase>
         _audioSource.volume = value;
     }
 
+    public void SoundInit()
+    {
+        _optionUI.GetComponent<OptionUI>().SoundInit();
+    }
 
 
 
@@ -217,7 +227,8 @@ public class UIBase : GenericSingleton<UIBase>
         _blackScreen.color = Color.black;
 
         yield return new WaitForSeconds(delaytime);
-
+        GenericSingleton<GameManager>.Instance.CheckState();
+        GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.Loading);
         float elapsedTime = 0;
         Color startColor = _blackScreen.color;
         Color endColor = new Color(0, 0, 0, 0); 

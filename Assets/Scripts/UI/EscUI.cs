@@ -44,7 +44,14 @@ public class EscUI : MonoBehaviour
         switch (_currentIdx)
         {
             case 0:
-                GenericSingleton<UIBase>.Instance.ShowOptionUI(true);
+                {
+                    GenericSingleton<UIBase>.Instance.ShowOptionUI(true);
+                }
+                break;
+            case 1:
+                {
+                    GenericSingleton<GameManager>.Instance.ResumeGame();
+                }
                 break;
         }
     }

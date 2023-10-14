@@ -22,6 +22,7 @@ public class BossIntro : MonoBehaviour
     {
         // 초기 위치 설정
         _bossIntro.SetActive(true);
+        GenericSingleton<SoundManager>.Instance.Stop();
         _player.localPosition = new Vector3(-820, 0, 0);
         _boss.localPosition = new Vector3(1050, 0, 0);
         _vsText.localScale = Vector3.zero;
@@ -35,32 +36,34 @@ public class BossIntro : MonoBehaviour
             elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
-        
+
         
 
         // 양쪽에서 가운데로 이동
-        duration = 1.0f;
+        duration = 0.8f;
         elapsedTime = 0;
-
+        GenericSingleton<UIBase>.Instance.BossIntroSound();
         while (elapsedTime < duration)
         {
             float t = elapsedTime / duration;
             _player.localPosition = Vector3.Lerp(new Vector3(-820, 0, 0), new Vector3(-50, 0, 0), t);
             _boss.localPosition = Vector3.Lerp(new Vector3(1050, 0, 0), new Vector3(50, 0, 0), t);
+            _vsText.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(0, 360, t));
             elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
+
+        
         // 가운데에서 VS 텍스트 등장 (회전)
         _vsText.localScale = Vector3.one * 2;
         _vsText.localRotation = Quaternion.Euler(0, 0, 0);
 
-        duration = 1.5f;
+        duration = 0.6f;
         elapsedTime = 0;
 
         while (elapsedTime < duration)
         {
             float t = elapsedTime / duration;
-            _vsText.localRotation = Quaternion.Euler(0, 0, Mathf.Lerp(0, 360, t));
             _player.localPosition = Vector3.Lerp(new Vector3(-50, 0, 0), Vector3.zero, t);
             _boss.localPosition = Vector3.Lerp(new Vector3(50, 0, 0), Vector3.zero, t);
             elapsedTime += Time.unscaledDeltaTime;
@@ -95,8 +98,9 @@ public class BossIntro : MonoBehaviour
             elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
-        GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.Playing);
+        GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.EnemiesOn);
         _bossIntro.SetActive(false);
         GenericSingleton<UIBase>.Instance.ShowBossHpBar(true);
+        GenericSingleton<SoundManager>.Instance.SetBoss();
     }
 }

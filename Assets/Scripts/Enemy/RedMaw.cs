@@ -29,7 +29,6 @@ public class RedMaw : MonoBehaviour
     void OnDamage()
     {
         _hp = _hp - _attcnt.GetPower();
-        Debug.Log(GetComponent<SpriteRenderer>());
         _spriteRenderer.color = new Vector4(225 / 255f, 60 / 255f, 60 / 255f, 255 / 255f);
         Invoke("DamageEnd", 0.1f);
         if (_hp <= 0)

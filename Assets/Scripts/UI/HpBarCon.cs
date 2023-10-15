@@ -76,6 +76,11 @@ public class HpBarCon : MonoBehaviour
     }
     void InstantiateHpBar()
     {
+        GameObject[] hearts = GameObject.FindGameObjectsWithTag("HpUI");
+        foreach(var heart in hearts)
+        {
+            Destroy(heart);
+        }
         for (int i = 0; i < _maxTotalHp; i++)
         {
             GameObject temp = Instantiate(_hpBarPrefap);

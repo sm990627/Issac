@@ -13,7 +13,7 @@ public class BossIntro : MonoBehaviour
 
     void OnEnable()
     {
-        GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.Loading);
+        GenericSingleton<GameManager>.Instance.SetGameState(GameState.Loading);
         StartCoroutine(IntroAnimation());
         
     }
@@ -98,9 +98,10 @@ public class BossIntro : MonoBehaviour
             elapsedTime += Time.unscaledDeltaTime;
             yield return null;
         }
-        GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.EnemiesOn);
-        _bossIntro.SetActive(false);
+        GenericSingleton<GameManager>.Instance.SetGameState(GameState.EnemiesOn);
         GenericSingleton<UIBase>.Instance.ShowBossHpBar(true);
+        GenericSingleton<UIBase>.Instance.UpdateBossHP(1,1);
         GenericSingleton<SoundManager>.Instance.SetBoss();
+        gameObject.SetActive(false);
     }
 }

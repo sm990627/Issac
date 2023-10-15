@@ -492,7 +492,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 5
-      m_TileSpriteIndex: 5
+      m_TileSpriteIndex: 6
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -605,10 +605,10 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 1
-    m_Data: {fileID: 589781593, guid: fc6a07c2cddf54241b4d42f9a2c8802a, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 589781593, guid: fc6a07c2cddf54241b4d42f9a2c8802a, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 18
     m_Data:
@@ -1001,7 +1001,7 @@ PrefabInstance:
     - target: {fileID: 7256753534274382366, guid: 0cd12db1e87f40f4cab42f16c393e8a4,
         type: 3}
       propertyPath: m_Name
-      value: Horf (3)
+      value: Horf
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0cd12db1e87f40f4cab42f16c393e8a4, type: 3}
@@ -2039,7 +2039,7 @@ PrefabInstance:
     - target: {fileID: 7256753534274382366, guid: 0cd12db1e87f40f4cab42f16c393e8a4,
         type: 3}
       propertyPath: m_Name
-      value: Horf (1)
+      value: Horf
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0cd12db1e87f40f4cab42f16c393e8a4, type: 3}
@@ -2154,7 +2154,7 @@ PrefabInstance:
     - target: {fileID: 7256753534274382366, guid: 0cd12db1e87f40f4cab42f16c393e8a4,
         type: 3}
       propertyPath: m_Name
-      value: Horf (2)
+      value: Horf
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0cd12db1e87f40f4cab42f16c393e8a4, type: 3}

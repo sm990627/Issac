@@ -47,7 +47,7 @@ public class MiniMapUI : MonoBehaviour
     public void UpdateMiniMap()
     {
         ClearMap();
-        Vector2 currentPos = GenericSingleton<StageManager>.Instance.GetComponent<StageManager>().CurrentPos;
+        Vector2 currentPos = GenericSingleton<StageManager>.Instance.CurrentPos;
         foreach (var temp in rooms)
         {
             Vector2 roomPosition = temp.Key;

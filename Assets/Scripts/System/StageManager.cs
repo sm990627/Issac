@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StageManager : GenericSingleton<StageManager>
 {
-    Dictionary<Vector2, Room> _rooms;
+    Dictionary<Vector2, Room> _rooms = new Dictionary<Vector2,Room>();
     [SerializeField] Sprite[] _doorSprites;
     [SerializeField] GameObject _upClose;
     [SerializeField] GameObject _rightClose;
@@ -22,21 +22,28 @@ public class StageManager : GenericSingleton<StageManager>
     public Room CurrentRoom { get { return _currentRoom; } }
     public void Init()
     {
-        _rooms = GenericSingleton<RoomManager>.Instance.GetComponent<RoomManager>().Rooms;
-        _upDoor =  GenericSingleton<Doors>.Instance.GetComponent<Doors>()._doors[0];
-        _rightDoor = GenericSingleton<Doors>.Instance.GetComponent<Doors>()._doors[1];
-        _downDoor = GenericSingleton<Doors>.Instance.GetComponent<Doors>()._doors[2];
-        _leftDoor = GenericSingleton<Doors>.Instance.GetComponent<Doors>()._doors[3];
+        _rooms = GenericSingleton<RoomManager>.Instance.Rooms;
+        _upDoor =  GenericSingleton<Doors>.Instance._doors[0];
+        _rightDoor = GenericSingleton<Doors>.Instance._doors[1];
+        _downDoor = GenericSingleton<Doors>.Instance._doors[2];
+        _leftDoor = GenericSingleton<Doors>.Instance._doors[3];
         ResetCurrentPos();
+        _currentRoom = GetRoom(_currentPos);
+        GenericSingleton<PickUpItemManager>.Instance.UpdatePickUpItem();
         DoorInit();
         GenericSingleton<Doors>.Instance.GetComponent<Doors>().DoorOpen();
+    }
+    public void LoadInit()
+    {
+        _upDoor = GenericSingleton<Doors>.Instance._doors[0];
+        _rightDoor = GenericSingleton<Doors>.Instance._doors[1];
+        _downDoor = GenericSingleton<Doors>.Instance._doors[2];
+        _leftDoor = GenericSingleton<Doors>.Instance._doors[3];
     }
     public void ResetCurrentPos()
     {
         _currentPos = Vector2.zero;
-        if (_rooms.TryGetValue(_currentPos, out Room room)) _currentRoom = room;
-        room.Load();
-        GenericSingleton<PickUpItemManager>.Instance.UpdatePickUpItem();
+        GetRoom(_currentPos).Load();
     }
     public void DoorInit()
     {
@@ -74,6 +81,7 @@ public class StageManager : GenericSingleton<StageManager>
   
     void SetDoorState(Vector2 targetPos, GameObject door, GameObject close, Sprite doorSprite)
     {
+
         if (_rooms.ContainsKey(targetPos))
         {
             door.SetActive(true);
@@ -100,12 +108,14 @@ public class StageManager : GenericSingleton<StageManager>
         else
         {
             return _doorSprites[0];
+            
         }
         
+
     }
     Room GetRoom(Vector2 pos)
     {
-       if( _rooms.TryGetValue(pos, out Room targetRoom))
+        if ( _rooms.TryGetValue(pos, out Room targetRoom))
         {
             return targetRoom;
         }
@@ -150,8 +160,16 @@ public class StageManager : GenericSingleton<StageManager>
         if (_rooms.TryGetValue(_currentPos, out Room room)) _currentRoom = room;
         GenericSingleton<PickUpItemManager>.Instance.UpdatePickUpItem();
         GenericSingleton<UIBase>.Instance.UpdateMiniMap();
+        GenericSingleton<DataManager>.Instance.SaveData();
     }
-
+    public void LoadCurrentPos(Vector2 pos,Vector2 Ppos)
+    {
+        _rooms = GenericSingleton<RoomManager>.Instance.Rooms;
+        _currentPos = pos;
+        _currentRoom = GetRoom(_currentPos);
+        GenericSingleton<PlayerCon>.Instance.SetPosition(Ppos);
+        _currentRoom.Load();
+    }
 
 }
 

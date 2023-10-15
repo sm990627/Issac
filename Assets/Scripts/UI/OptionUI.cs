@@ -82,7 +82,6 @@ public class OptionUI : MonoBehaviour
                     if (_sfxIdx < -1) _sfxIdx = -1;
                     GenericSingleton<UIBase>.Instance.EffectSound(_sfxIdx * 0.1f);
                     UpdateSFXUI();
-                    Debug.Log(_sfxIdx * 0.1f);
                 }
                 break;
             case 1:
@@ -105,7 +104,7 @@ public class OptionUI : MonoBehaviour
                     if (_sfxIdx == _sfx.Length + 1) _sfxIdx--;
                     GenericSingleton<UIBase>.Instance.EffectSound(_sfxIdx * 0.1f);
                     UpdateSFXUI();
-                    Debug.Log(_sfxIdx * 0.1f);
+                    
                 }
                 break;
             case 1:

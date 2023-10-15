@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 434673387651537568}
   - component: {fileID: 434673387651537571}
-  - component: {fileID: 128959357}
   m_Layer: 0
   m_Name: StageManager
   m_TagString: Untagged
@@ -45,15 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab98f458e15c70849af482b7373760ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &128959357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 434673387651537569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 585ba9c31d6e55247880a5c549f4711e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _doorSprites:
+  - {fileID: -866833988, guid: bec93364a044391439c3686e536df3cc, type: 3}
+  - {fileID: -1851312078, guid: bec93364a044391439c3686e536df3cc, type: 3}
+  - {fileID: 1741008812, guid: bec93364a044391439c3686e536df3cc, type: 3}
+  _upClose: {fileID: 0}
+  _rightClose: {fileID: 0}
+  _downClose: {fileID: 0}
+  _leftClose: {fileID: 0}

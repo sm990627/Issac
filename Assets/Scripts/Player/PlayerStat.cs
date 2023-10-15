@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public  class PlayerStat
@@ -38,6 +39,16 @@ public  class PlayerStat
         _range = range;
         _bulletSpeed = bulletSpeed;
     }
-    
+    public void LoadPlayerStat(PlayerStatData data)
+    {
+        _maxHp = data.MaxHp;
+        _hp = data.Hp;
+        _speed = data.Speed;
+        _power = data.Power;
+        _attackSpeed = data.AttackSpeed;
+        _bulletCnt = data.BulletCnt;
+        _range = data.Range;
+        _bulletSpeed = data.BulletSpeed;
+    }
    
 }

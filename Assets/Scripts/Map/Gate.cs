@@ -16,7 +16,7 @@ public class Gate : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            GenericSingleton<StageManager>.Instance.GetComponent<StageManager>().ChangeScene(dir);
+            GenericSingleton<StageManager>.Instance.ChangeScene(dir);
         }
     }
     

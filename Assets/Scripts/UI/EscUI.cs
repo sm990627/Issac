@@ -8,7 +8,7 @@ public class EscUI : MonoBehaviour
     [SerializeField] Transform _content;
     [SerializeField] RectTransform[] _menus;
     [SerializeField] RectTransform _arrow;
-    int _currentIdx = 0;
+    int _currentIdx = 1;
     public void DrawItem(int i)
     {
         GameObject temp = Instantiate(_item,_content);
@@ -34,6 +34,11 @@ public class EscUI : MonoBehaviour
         UpdateArrowPosition();
     }
 
+    public void EscUIinit()
+    {
+        _currentIdx = 1;
+        UpdateArrowPosition();
+    }
     public void UpdateArrowPosition()
     {
         _arrow.anchoredPosition = _menus[_currentIdx].anchoredPosition + new Vector2(150, 0);
@@ -51,6 +56,12 @@ public class EscUI : MonoBehaviour
             case 1:
                 {
                     GenericSingleton<GameManager>.Instance.ResumeGame();
+                }
+                break;
+
+            case 2:
+                {
+                    GenericSingleton<UIBase>.Instance.GoTitle();
                 }
                 break;
         }

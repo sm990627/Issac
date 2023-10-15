@@ -13,6 +13,7 @@ public class UIBase : GenericSingleton<UIBase>
     [SerializeField] GameObject _bossIntro;
     [SerializeField] GameObject _bossHpBar;
     [SerializeField] GameObject _miniMapUI;
+    [SerializeField] GameObject _gameOverUI;
     [SerializeField] Image _blackScreen;
     [SerializeField] AudioClip[] _uiSound;
 
@@ -74,31 +75,51 @@ public class UIBase : GenericSingleton<UIBase>
             }
 
         }
+        if(GenericSingleton<GameManager>.Instance.CurrentState == GameState.GameOver)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
+            {
+                GoTitle();
+            }
+        }
         
     }
     public void GoTitle()
-    {
+    {  
         GenericSingleton<GameManager>.Instance.Title();
+        Title();
         SceneManager.LoadSceneAsync("TitleScene");
     }
 
     public void Init()
-    {
-        
+    { 
         ShowMiniMap(true);
         GenerateMiniMap();
         OptionInit();
         InvenReset();
+        ShowHpBar(true);
+        ShowBossHpBar(false);
         ShowEscUI(false);
+        ShowGameOverUI(false);
+        HpBarInit();
     }
     public void Title()
     {
+        StartCoroutine(TitleFade(0.3f, 1f));
+        ShowGameOverUI(false);
         ShowEscUI(false);
+        ShowHpBar(false);
+        ShowBossHpBar(false);
+        OptionInit();
         ShowMiniMap(false);
     }
     public void HpBarInit()
     {
         _hpBar.GetComponent<HpBarCon>().Init();
+    }
+    public void ShowHpBar(bool isShow)
+    {
+        _hpBar.SetActive(isShow);
     }
     public void HpUpdate()
     {
@@ -135,10 +156,19 @@ public class UIBase : GenericSingleton<UIBase>
     public void ShowEscUI(bool isShow)
     {
         _escUI.SetActive(isShow);
+        _escUI.GetComponent<EscUI>().EscUIinit();
     }
-    public void UpdateBossHP()
+    public void ShowGameOverUI(bool isShow)
     {
-        _bossHpBar.GetComponent<BossHpBarUI>().Init();
+        _gameOverUI.SetActive(isShow);
+    }
+    public void SetGameOverEnemy(string enemy)
+    {
+        _gameOverUI.GetComponent<GameOverUI>().SetEnemyImage(enemy);
+    }
+    public void UpdateBossHP(float hp, float maxhp)
+    {
+        _bossHpBar.GetComponent<BossHpBarUI>().Init(hp,maxhp);
     }
     public void InvenDraw(int idx)
     {
@@ -222,13 +252,13 @@ public class UIBase : GenericSingleton<UIBase>
 
     private IEnumerator FadeGameEffect(float delaytime, float fadeDuration)
     {
-        GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.Loading);
+        GenericSingleton<GameManager>.Instance.SetGameState(GameState.Loading);
         _blackScreen.gameObject.SetActive(true);
         _blackScreen.color = Color.black;
 
         yield return new WaitForSeconds(delaytime);
         GenericSingleton<GameManager>.Instance.CheckState();
-        GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.Loading);
+        GenericSingleton<GameManager>.Instance.SetGameState(GameState.Loading);
         float elapsedTime = 0;
         Color startColor = _blackScreen.color;
         Color endColor = new Color(0, 0, 0, 0); 
@@ -240,6 +270,24 @@ public class UIBase : GenericSingleton<UIBase>
         }
 
         _blackScreen.gameObject.SetActive(false); 
-        GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.Playing);
+        GenericSingleton<GameManager>.Instance.SetGameState(GameState.Playing);
+    }
+    private IEnumerator TitleFade(float delaytime, float fadeDuration)
+    { 
+        _blackScreen.gameObject.SetActive(true);
+        _blackScreen.color = Color.black;
+
+        yield return new WaitForSeconds(delaytime);
+        float elapsedTime = 0;
+        Color startColor = _blackScreen.color;
+        Color endColor = new Color(0, 0, 0, 0);
+        while (elapsedTime < fadeDuration)
+        {
+            _blackScreen.color = Color.Lerp(startColor, endColor, elapsedTime / fadeDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        _blackScreen.gameObject.SetActive(false);
     }
 }

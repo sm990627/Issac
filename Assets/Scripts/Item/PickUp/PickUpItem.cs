@@ -40,13 +40,13 @@ public class PickUpItem : MonoBehaviour
      }
      public void UpdateItemState()
      {
-        Debug.Log(GenericSingleton<StageManager>.Instance.CurrentRoom._pickUpItem);
+    
         gameObject.SetActive(true);
         gameObject.transform.position = Vector3.zero;
         switch (GenericSingleton<StageManager>.Instance.CurrentRoom._pickUpItem)
         {
             
-            case Room.PickUpItems.Heart0:
+            case PickUpItems.Heart0:
                 {
                     _ren.sprite = _heartImg[0];
                     _hpAmount = 0.5f;
@@ -54,7 +54,7 @@ public class PickUpItem : MonoBehaviour
                 }
                 break;
 
-            case Room.PickUpItems.Heart1:
+            case PickUpItems.Heart1:
                 {
                     _ren.sprite = _heartImg[1];
                     _hpAmount = 1;
@@ -63,7 +63,7 @@ public class PickUpItem : MonoBehaviour
                 break;
 
 
-            case Room.PickUpItems.Heart2:
+            case PickUpItems.Heart2:
                 {
                     _ren.sprite = _heartImg[2];
                     _hpAmount = 2;
@@ -71,7 +71,7 @@ public class PickUpItem : MonoBehaviour
                 }
                 break;
 
-            case Room.PickUpItems.Bomb1:
+            case PickUpItems.Bomb1:
                 {
                     _ren.sprite = _bombImg[0];
                     _bombAmount = 1;
@@ -79,7 +79,7 @@ public class PickUpItem : MonoBehaviour
                 }
                 break;
 
-            case Room.PickUpItems.Bomb2:
+            case PickUpItems.Bomb2:
                 {
                     _ren.sprite = _bombImg[1];
                     _bombAmount = 2;

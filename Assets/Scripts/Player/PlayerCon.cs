@@ -1,5 +1,9 @@
 
+using JetBrains.Annotations;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq.Expressions;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 
@@ -32,7 +36,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
 
     //사용할 컴포넌트
     Rigidbody2D _rbody;
-    GameObject _player;
+    [SerializeField] GameObject _player;
     SpriteRenderer _rend;
     ItemManger im = new ItemManger();
     PlayerStat pStat;
@@ -49,15 +53,23 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     string rightAnime = "PlayerRight";
     string idleAnime = "PlayerIdle";
 
+    string _lastEnemy;
     public  void Init()
     {
         gameObject.SetActive(true);
-        pStat = new PlayerStat(_maxHp,_maxTotalHp, _maxHp, _speed,_power,_attackSpeed,_bulletCnt,_range,_bulletSpeed);
-        _player = GameObject.Find("PlayerHead");        
+        gameObject.GetComponent<CapsuleCollider2D>().enabled = true;
+        pStat = new PlayerStat(_maxHp,_maxTotalHp, _maxHp, _speed,_power,_attackSpeed,_bulletCnt,_range,_bulletSpeed);      
+    }
+
+    public void LoadStart()
+    {
+        gameObject.SetActive(true);
+        gameObject.GetComponent<CapsuleCollider2D>().enabled = true;
+        pStat = new PlayerStat(_maxHp, _maxTotalHp, _maxHp, _speed, _power, _attackSpeed, _bulletCnt, _range, _bulletSpeed);
     }
     public void Hitted(GameObject Enemy,float dmg)
     {
-        OnDamage(Enemy, 1f);
+        OnDamage(Enemy, dmg,"Monstro");
     }
     void Start()
     {
@@ -70,7 +82,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     
     void Update()
     {
-        if (GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.EnemiesOn || GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.EnemiesOff)
+        if (GenericSingleton<GameManager>.Instance.CurrentState == GameState.EnemiesOn || GenericSingleton<GameManager>.Instance.CurrentState == GameState.EnemiesOff)
         {
             axisH = Input.GetAxisRaw("Horizontal");
             axisV = Input.GetAxisRaw("Vertical");
@@ -118,7 +130,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     }
     void FixedUpdate()
     {
-        if (GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.EnemiesOn || GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.EnemiesOff)
+        if (GenericSingleton<GameManager>.Instance.CurrentState == GameState.EnemiesOn || GenericSingleton<GameManager>.Instance.CurrentState == GameState.EnemiesOff)
         {
             if (inDamage)
             {
@@ -153,7 +165,10 @@ public class PlayerCon : GenericSingleton<PlayerCon>
 
         
     }
-
+    public void SetPosition(Vector2 pos)
+    {
+        gameObject.transform.position = pos;
+    }
     
     //벡터 두개를 받아 이동각 계산
     float GetAngleM(Vector2 v1, Vector2 v2)
@@ -175,9 +190,9 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     
     void SetBomb()
     {
-        GameObject bombprefab = Instantiate(_bomb, transform.position, Quaternion.identity);
+        //GameObject bombprefab = Instantiate(_bomb, transform.position, Quaternion.identity);
     }
-    void OnDamage(GameObject enemy,float damage)
+    void OnDamage(GameObject enemy,float damage,string enemyname)
     {
         if (!inDamage)
         {
@@ -195,10 +210,21 @@ public class PlayerCon : GenericSingleton<PlayerCon>
             }
             else
             {
+                GenericSingleton<GameManager>.Instance.SetGameState(GameState.GameOver);
+                gameObject.GetComponent<Animator>().SetBool("GameOver",true);
                 _audioSource.PlayOneShot(_dieSound);
-                gameObject.SetActive(false);
+                _lastEnemy = enemyname;
+                gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+                PlayerOff();
             }
         }
+    }
+   void PlayerOff()
+    {
+        GenericSingleton<UIBase>.Instance.ShowGameOverUI(true);
+        GenericSingleton<SoundManager>.Instance.SetGameOver();
+        GenericSingleton<UIBase>.Instance.SetGameOverEnemy(_lastEnemy);
+        gameObject.SetActive(false);
     }
     void Heal(float amount)
     {
@@ -212,17 +238,20 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Enemy")|| collision.collider.CompareTag("EnemyBullet"))
+        if (collision.collider.CompareTag("Enemy"))
         {
-            OnDamage(collision.gameObject,0.5f);
+            OnDamage(collision.gameObject,0.5f,collision.gameObject.name);
+        }
+        if (collision.collider.CompareTag("EnemyBullet"))
+        {
+            OnDamage(collision.gameObject, 0.5f,collision.collider.GetComponent<EnemyBulletCon>().GetName());
         }
         if (collision.collider.CompareTag("Boss"))
         {
-            OnDamage(collision.gameObject,1);
+            OnDamage(collision.gameObject,1,"Monstro");
         }
         if (collision.collider.CompareTag("PickUp"))
         {
-            Debug.Log(collision.collider.GetComponent<PickUpItem>()?.Type);
             if (collision.collider.GetComponent<PickUpItem>()?.Type == PickUpItem.PickUp.Heart)
             {
                 if (pStat.Hp != pStat.MaxHp)
@@ -282,13 +311,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
         gameObject.GetComponent<Animator>().SetBool("ItemGain", false);
         _player.GetComponent<SpriteRenderer>().enabled = true;
     }
-    public void GameClear()
-    {
-        transform.position = new Vector3(0,0.2f,0);
-        GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-        gameObject.GetComponent<Animator>().Play("Clear");
-        GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.GameClear);
-    }
+
 
     void EffectSound(float value)
     {
@@ -298,6 +321,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     {
         GenericSingleton<UIBase>.Instance.EffectVolume -= EffectSound;
     }
+   
 
 }
 

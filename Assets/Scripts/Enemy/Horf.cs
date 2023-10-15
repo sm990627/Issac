@@ -59,10 +59,10 @@ public class Horf : MonoBehaviour
     }
     void Attack()
     {
-        
         //»ý¼º À§Ä¡ º¤ÅÍ
         Vector3 VI = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         GameObject temp = Instantiate(_bullet, VI, Quaternion.identity);
+        temp.GetComponent<EnemyBulletCon>().SetOwner(gameObject.name);
         Rigidbody2D rb = temp.GetComponent<Rigidbody2D>();
         //¹ß»ç º¤ÅÍ  
         Vector2 dirVector = (_playerTf.position - transform.position).normalized;

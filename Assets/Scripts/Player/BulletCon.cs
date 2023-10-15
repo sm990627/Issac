@@ -69,6 +69,9 @@ public class BulletCon : MonoBehaviour
     {
         _audioSource.volume = value;
     }
-
+    private void OnDestroy()
+    {
+        GenericSingleton<UIBase>.Instance.EffectVolume -= EffectSound;
+    }
 
 }

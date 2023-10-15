@@ -135,20 +135,21 @@ public class RoomManager : GenericSingleton<RoomManager>
 
         return path;
     }
+    public void LoadRoomData(List<RoomData> roomDatas)
+    {
+        Dictionary<Vector2, Room> Rooms = new Dictionary<Vector2, Room>();
+        foreach (RoomData roomData in roomDatas)
+        {
+            Room room = new Room("",RoomType.Start);
+            room.ConvertFromData(roomData);
+            Rooms.Add(roomData.Pos, room);
+        }
+        _rooms = Rooms;
+    }
 }
 public class Room
 {
-    public enum PickUpItems
-    {
-        Default,
-        None,
-        Heart0,
-        Heart1,
-        Heart2,
-        Bomb1,
-        Bomb2,
-        IsUsed,
-    }
+
     public PickUpItems _pickUpItem = PickUpItems.Default;
     string _sceneName;
     RoomType _type;
@@ -210,6 +211,24 @@ public class Room
         }
         
     }
+    public RoomData ConvertToData()
+    {
+        RoomData roomData = new RoomData();
+        roomData.SceneName = _sceneName;
+        roomData.TresureIdx = _treasureIdx;
+        roomData.IsClear = _isClear;
+        roomData.Type = _type;
+        roomData.PickUpItem = _pickUpItem;
+        return roomData;
+    }
+    public void ConvertFromData(RoomData data)
+    {
+        _sceneName = data.SceneName;
+        _treasureIdx = data.TresureIdx;
+        _isClear = data.IsClear;
+        _type = data.Type;
+        _pickUpItem = data.PickUpItem;
+    }
 
 }
 public enum RoomType
@@ -218,4 +237,15 @@ public enum RoomType
     Boss,
     Treasure,
     Normal,
+}
+public enum PickUpItems
+{
+    Default,
+    None,
+    Heart0,
+    Heart1,
+    Heart2,
+    Bomb1,
+    Bomb2,
+    IsUsed,
 }

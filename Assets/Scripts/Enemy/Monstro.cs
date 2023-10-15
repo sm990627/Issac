@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-public class Monstro : GenericSingleton<Monstro>
+public class Monstro : MonoBehaviour
 {
     Transform _player;
     GameObject _boss;
@@ -43,7 +43,7 @@ public class Monstro : GenericSingleton<Monstro>
     {
         
 
-        while (GenericSingleton<GameManager>.Instance.CurrentState == GameManager.GameState.Playing)
+        while (GenericSingleton<GameManager>.Instance.CurrentState == GameState.Playing)
         {
             yield return null;
         }
@@ -54,7 +54,7 @@ public class Monstro : GenericSingleton<Monstro>
     {
         while (_hp > 0)
         {
-            Debug.Log(_currentState);
+
             switch (_currentState)
             {
                 case BossState.Spawn:
@@ -127,7 +127,6 @@ public class Monstro : GenericSingleton<Monstro>
     void MoveToPlayer() 
     {
         Vector3 dirVector = (_player.position - _boss.transform.position).normalized;
-        Debug.Log(dirVector);
         if (dirVector.x > 0)
         {
             _ren.flipX = true;
@@ -192,9 +191,9 @@ public class Monstro : GenericSingleton<Monstro>
     public void OnDamage()
     {
          _hp = _hp - _attCnt.GetPower();
-        GenericSingleton<UIBase>.Instance.UpdateBossHP();
-        _boss.GetComponent<SpriteRenderer>().color =new Vector4(225,60,60,255);
-        Invoke("DamageEnd", 0.3f);
+        GenericSingleton<UIBase>.Instance.UpdateBossHP(_hp,_maxHp);
+        _boss.GetComponent<SpriteRenderer>().color = new Vector4(225,60,60,255);
+        Invoke("DamageEnd", 0.4f);
         if (_hp <= 0)
         {
             _animator.Play("MonstroDie");
@@ -212,8 +211,8 @@ public class Monstro : GenericSingleton<Monstro>
         {
             _isClear = true;
             GenericSingleton<SoundManager>.Instance.SetBasement();
-            GenericSingleton<Doors>.Instance.TrapDoorOn();
-            GenericSingleton<GameManager>.Instance.SetGameState(GameManager.GameState.EnemiesOff);
+            GenericSingleton<Doors>.Instance.TrapDoor(true);
+            GenericSingleton<GameManager>.Instance.SetGameState(GameState.EnemiesOff);
             GenericSingleton<UIBase>.Instance.ShowBossHpBar(false);
             gameObject.SetActive(false);
         }

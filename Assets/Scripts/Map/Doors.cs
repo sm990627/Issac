@@ -20,8 +20,8 @@ public class Doors : GenericSingleton<Doors>
             _isOpen = false;
         }
     }
-    public void TrapDoorOn()
+    public void TrapDoor(bool isShow)
     {
-        _doors[4].SetActive(true);
+        _doors[4].SetActive(isShow);
     }
 }

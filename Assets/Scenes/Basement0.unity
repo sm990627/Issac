@@ -352,7 +352,7 @@ PrefabInstance:
     - target: {fileID: 8417352756320077297, guid: bfdfa922a9a19a0429dfd990f8be1891,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfdfa922a9a19a0429dfd990f8be1891, type: 3}
@@ -526,11 +526,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UIBase
-      objectReference: {fileID: 0}
-    - target: {fileID: 7499531857746351450, guid: e5982e3991a3553438afd651396c251b,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7499531859057890107, guid: e5982e3991a3553438afd651396c251b,
         type: 3}

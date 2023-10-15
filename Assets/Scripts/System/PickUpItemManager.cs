@@ -7,7 +7,7 @@ public class PickUpItemManager : GenericSingleton<PickUpItemManager>
     [SerializeField] GameObject _pickUpItem;
     [SerializeField] Sprite[] _heartImg;
     [SerializeField] Sprite[] _bombImg;
-     void Start()
+     public void Init()
      {
         _pickUpItem.GetComponent<PickUpItem>()?.Init(_heartImg, _bombImg);
         UpdatePickUpItem();

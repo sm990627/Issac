@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,18 +17,7 @@ public class GameManager : GenericSingleton<GameManager>
 
 
     GameState _lastState;
-    public enum GameState
-    {
-        Title ,
-        Loading,
-        GameStart,
-        Playing,
-        GameOver,
-        GameClear,
-        EnemiesOff = 100,
-        EnemiesOn  = 101,
-        Pause      = 102,
-    }
+    
 
     public void SetGameState(GameState newState)
     {
@@ -36,6 +26,7 @@ public class GameManager : GenericSingleton<GameManager>
         switch (newState)
         {
             case GameState.Title:
+                Time.timeScale = 1;
                 break;
 
             case GameState.Loading:
@@ -78,41 +69,68 @@ public class GameManager : GenericSingleton<GameManager>
 
             case GameState.GameOver:
                 {
-                    Time.timeScale = 0; 
+                    Time.timeScale = 0;
+                    string filePath = Path.Combine(Application.persistentDataPath, "GameData.json");
+                    if (File.Exists(filePath)) File.Delete(filePath);
                 }
                 break;
 
             case GameState.GameClear:
                 {
                     Time.timeScale = 1;
+                    string filePath = Path.Combine(Application.persistentDataPath, "GameData.json");
+                    if (File.Exists(filePath)) File.Delete(filePath);
+                    GenericSingleton<UIBase>.Instance.GoTitle();
                 }
                 break;
 
         }
-        Debug.Log(_currentState);
+       
     }
     public void Title()
     {
         SetGameState(GameState.Title);
+        GenericSingleton<SoundManager>.Instance.Setitle();
+        GenericSingleton<PickUpItemManager>.Instance.gameObject.SetActive(false);
+        GenericSingleton<Doors>.Instance.TrapDoor(false); 
+        GenericSingleton<Doors>.Instance.gameObject.SetActive(false);
         GenericSingleton<PlayerCon>.Instance.gameObject.SetActive(false);
         GenericSingleton<UIBase>.Instance.Title();
+        _escUI = false;
     }
     protected override void OnAwake()                                      
     {
+        GenericSingleton<SoundManager>.Instance.Init();
         Title();
 
     }
     public void GameStart()
     {
         _rooms = GenericSingleton<RoomManager>.Instance.Init();
+        GenericSingleton<Doors>.Instance.gameObject.SetActive(true);
         GenericSingleton<StageManager>.Instance.Init();
-        GenericSingleton<Doors>.Instance.DoorOpen();
         GenericSingleton<PlayerCon>.Instance.gameObject.SetActive(true);
         GenericSingleton<PlayerCon>.Instance.Init();
         GenericSingleton<AttackCon>.Instance.Init();
         GenericSingleton<UIBase>.Instance.Init();
-        GenericSingleton<UIBase>.Instance.HpBarInit();
         GenericSingleton<SoundManager>.Instance.SetBasement();
+        GenericSingleton<PickUpItemManager>.Instance.gameObject.SetActive(true);
+        GenericSingleton<PickUpItemManager>.Instance.Init();
+        _currentState = GameState.Loading;
+    }
+    public void LoadGame()
+    {
+        GenericSingleton<PlayerCon>.Instance.LoadStart();
+        GenericSingleton<DataManager>.Instance.LoadData();     
+        GenericSingleton<Doors>.Instance.gameObject.SetActive(true);
+        GenericSingleton<StageManager>.Instance.LoadInit();
+        GenericSingleton<StageManager>.Instance.DoorInit();
+        GenericSingleton<AttackCon>.Instance.Init();
+        GenericSingleton<UIBase>.Instance.Init();
+        GenericSingleton<UIBase>.Instance.UpdateMiniMap();
+        GenericSingleton<SoundManager>.Instance.SetBasement();
+        GenericSingleton<PickUpItemManager>.Instance.gameObject.SetActive(true);
+        GenericSingleton<PickUpItemManager>.Instance.Init();
         _currentState = GameState.Loading;
     }
 
@@ -141,7 +159,6 @@ public class GameManager : GenericSingleton<GameManager>
                     _restartTimer += Time.deltaTime;
                     if (_restartTimer > 2)
                     {
-                        Debug.Log("¿ÁΩ√¿€");
                         _restartTimer = 0;
                         Restart();
                     }
@@ -170,7 +187,8 @@ public class GameManager : GenericSingleton<GameManager>
     void Restart() 
     {                             
         GenericSingleton<RoomManager>.Instance.Init();                     
-        _rooms = GenericSingleton<RoomManager>.Instance.Rooms;                                    
+        _rooms = GenericSingleton<RoomManager>.Instance.Rooms;
+        GenericSingleton<SoundManager>.Instance.SetBasement();
         RoomClear();
         GenericSingleton<StageManager>.Instance.Init();
         GenericSingleton<PlayerCon>.Instance.Init();                       
@@ -206,7 +224,17 @@ public class GameManager : GenericSingleton<GameManager>
     {   
         Invoke("RoomClear", 0.2f);
     }
-
-
     
+}
+public enum GameState
+{
+    Title,
+    Loading,
+    GameStart,
+    Playing,
+    GameOver,
+    GameClear,
+    EnemiesOff = 100,
+    EnemiesOn = 101,
+    Pause = 102,
 }

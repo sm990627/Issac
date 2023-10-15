@@ -190,6 +190,7 @@ public class Heart : MonoBehaviour
         for (int i = 0; i < _FirePool.Length; i++)
         {
             GameObject temp = Instantiate(_bullet, VI, Quaternion.identity);
+            temp.GetComponent<EnemyBulletCon>().SetOwner(gameObject.name);
             Rigidbody2D rb = temp.GetComponent<Rigidbody2D>();
             _FirePool[i] = temp;
             Vector3 direction = Quaternion.AngleAxis(ang, Vector3.forward) * Vector3.right;

@@ -136,7 +136,6 @@ public class TitleManager : MonoBehaviour
         {
             MoveArrowUp();
         }
-
         _audioSource.PlayOneShot(_clip[2]);
         UpdateArrowPosition();
     }
@@ -150,17 +149,17 @@ public class TitleManager : MonoBehaviour
     {
         switch (_currentIdx)
         {
-            case 0:
+            case 0://게임 새로 시작
                 {
                     LoadSceneAsync();
                 }
                 break;
-            case 1:
+            case 1: // 게임 불러오기
                 {
                     GenericSingleton<GameManager>.Instance.LoadGame();
                 }
                 break;
-            case 2:
+            case 2: // 옵션 열기
                 {
                     GenericSingleton<UIBase>.Instance.ShowOptionUI(true);
                 }

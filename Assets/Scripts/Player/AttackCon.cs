@@ -233,6 +233,11 @@ public class AttackCon : GenericSingleton<AttackCon>
         else _bulletPool[idx].GetComponent<SpriteRenderer>().color = Color.white;
         Rigidbody2D rb = _bulletPool[idx].GetComponent<Rigidbody2D>();
         rb.AddForce(VD, ForceMode2D.Impulse);
+
+    }
+    void IndexReset()
+    {
+        if (_poolIndex == 50) _poolIndex = 0;
     }
     void AttackAnime(float angle)
     {
@@ -259,8 +264,5 @@ public class AttackCon : GenericSingleton<AttackCon>
         return _power;
     }
     
-    void IndexReset()
-    {
-        if (_poolIndex == 50) _poolIndex = 0;
-    }
+    
 }

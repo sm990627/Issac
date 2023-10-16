@@ -149,7 +149,6 @@ public class RoomManager : GenericSingleton<RoomManager>
 }
 public class Room
 {
-
     public PickUpItems _pickUpItem = PickUpItems.Default;
     string _sceneName;
     RoomType _type;

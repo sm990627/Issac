@@ -60,7 +60,7 @@ public class GameManager : GenericSingleton<GameManager>
                     GenericSingleton<StageManager>.Instance.CurrentRoom.SetClear();
                     GenericSingleton<Doors>.Instance.DoorOpen();
                 }
-                
+  
                 break;
 
             case GameState.Pause:

@@ -79,7 +79,7 @@ public class Monstro : MonoBehaviour
                 case BossState.Jump:
                     _speed = _jumpSpeed;
                     _animator.Play("MonstroJump");
-                    int _jumpCount = UnityEngine.Random.Range(2,4);   //1~2¹ø ·£´ý Á¡ÇÁ
+                    int _jumpCount = UnityEngine.Random.Range(2,4);   //2~3¹ø ·£´ý Á¡ÇÁ
                     for (int i = 0; i < _jumpCount; i++)
                     {
                         yield return new WaitForSeconds(1.2f);

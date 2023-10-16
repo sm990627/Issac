@@ -113,6 +113,8 @@ public class AttackCon : GenericSingleton<AttackCon>
     {
         float axisH = GenericSingleton<PlayerCon>.Instance.GetComponent<PlayerCon>().GetAxis().x;
         float axisV = GenericSingleton<PlayerCon>.Instance.GetComponent<PlayerCon>().GetAxis().y;
+        Vector3[] VIs;
+        Vector3[] VDs;
         switch (_bulletCnt)
         {
             case 1: //한발 발사 플레이어 형태 고려 생성위치 조정   공격값 구한걸로 cos, sin값 가져오기 (발사에 이용)
@@ -138,19 +140,20 @@ public class AttackCon : GenericSingleton<AttackCon>
 
                     //생성 위치 벡터
                     //angleA 로 각계산을 해보면 x는 sin세타 y는 -cos세타가나옴  대칭으로 하나더생성
-                    Vector3 VI1 = new Vector3(transform.position.x - 0.15f * y + FireX * 0.3f, transform.position.y + 0.15f * x + FireY * 0.5f, transform.position.z);
-                    Vector3 VI2 = new Vector3(transform.position.x + 0.15f * y + FireX * 0.3f, transform.position.y - 0.15f * x + FireY * 0.5f, transform.position.z);
+                    VIs = new Vector3[2];
+                    VIs[0] = new Vector3(transform.position.x - 0.15f * y + FireX * 0.3f, transform.position.y + 0.15f * x + FireY * 0.5f, transform.position.z);
+                    VIs[1] = new Vector3(transform.position.x + 0.15f * y + FireX * 0.3f, transform.position.y - 0.15f * x + FireY * 0.5f, transform.position.z);
 
                     Vector3 VD = new Vector3(x + axisH * 0.2f, y + axisV * 0.2f, 0) * _bulletSpeed;
 
-                    BulletSetting(_poolIndex++, VI1, VD);
-                    IndexReset();
-
-                    BulletSetting(_poolIndex++, VI2, VD);
-                    IndexReset();
-
+                    for (int i = 0; i < 2; i++)
+                    {
+                        BulletSetting(_poolIndex++, VIs[i], VD);
+                        IndexReset();
+                    }
                     break;
                 }
+
             case 3: // 3발, 4발인 경우엔 산탄식 발사 조금씩 각도를 틀어서 생성 및 발사
                 {
                     float x1 = Mathf.Cos((angleA + 3.5f) * Mathf.Deg2Rad);
@@ -162,27 +165,29 @@ public class AttackCon : GenericSingleton<AttackCon>
 
 
                     //생성 위치 벡터 가운데 총알을 좀더 앞으로 배치
-                    Vector3 VI1 = new Vector3(transform.position.x - 0.2f * y2 + FireX * 0.5f, transform.position.y + 0.2f * x1 + FireY * 0.5f, transform.position.z);
-                    Vector3 VI2 = new Vector3(transform.position.x + FireX * 0.6f, transform.position.y + FireY * 0.6f, transform.position.z);
-                    Vector3 VI3 = new Vector3(transform.position.x + 0.2f * y2 + FireX * 0.5f, transform.position.y - 0.2f * x3 + FireY * 0.5f, transform.position.z);
+                    VIs = new Vector3[3];
+                    VIs[0] = new Vector3(transform.position.x - 0.2f * y2 + FireX * 0.5f, transform.position.y + 0.2f * x1 + FireY * 0.5f, transform.position.z);
+                    VIs[1] = new Vector3(transform.position.x + FireX * 0.6f, transform.position.y + FireY * 0.6f, transform.position.z);
+                    VIs[2] = new Vector3(transform.position.x + 0.2f * y2 + FireX * 0.5f, transform.position.y - 0.2f * x3 + FireY * 0.5f, transform.position.z);
+
                     //발사 벡터
-                    Vector3 VD1 = new Vector3(x1 + axisH * 0.2f, y1 + axisV * 0.2f, 0) * _bulletSpeed;
-                    Vector3 VD2 = new Vector3(x2 + axisH * 0.2f, y2 + axisV * 0.2f, 0) * _bulletSpeed;
-                    Vector3 VD3 = new Vector3(x3 + axisH * 0.2f, y3 + axisV * 0.2f, 0) * _bulletSpeed;
+                    VDs = new Vector3[3];
+                    VDs[0] = new Vector3(x1 + axisH * 0.2f, y1 + axisV * 0.2f, 0) * _bulletSpeed;
+                    VDs[1] = new Vector3(x2 + axisH * 0.2f, y2 + axisV * 0.2f, 0) * _bulletSpeed;
+                    VDs[2] = new Vector3(x3 + axisH * 0.2f, y3 + axisV * 0.2f, 0) * _bulletSpeed;
 
-                    BulletSetting(_poolIndex++, VI1, VD1);
-                    IndexReset();
-
-                    BulletSetting(_poolIndex++, VI2, VD2);
-                    IndexReset();
-
-                    BulletSetting(_poolIndex++, VI3, VD3);
-                    IndexReset();
+                    for (int i = 0; i < 3; i++)
+                    {
+                        BulletSetting(_poolIndex++, VIs[i], VDs[i]);
+                        IndexReset();
+                    }
 
                     break;
                 }
+
             case 4:
-                { //생성후 발사 각도
+                { 
+                    //생성후 발사 각도
                     float x1 = Mathf.Cos((angleA + 3.5f) * Mathf.Deg2Rad);
                     float y1 = Mathf.Sin((angleA + 3.5f) * Mathf.Deg2Rad);
                     float x2 = Mathf.Cos((angleA + 1.5f) * Mathf.Deg2Rad);
@@ -194,30 +199,24 @@ public class AttackCon : GenericSingleton<AttackCon>
                     float x = Mathf.Cos(angleA * Mathf.Deg2Rad);
                     float y = Mathf.Sin(angleA * Mathf.Deg2Rad);
 
-
                     //생성 위치 벡터  // y x 벌어지는정도  fireX,Y 눈물발사 각도
-                    Vector3 VI1 = new Vector3(transform.position.x - y * 0.3f + FireX * 0.4f, transform.position.y + x * 0.3f + FireY * 0.4f, transform.position.z);
-                    Vector3 VI2 = new Vector3(transform.position.x - y * 0.15f + FireX * 0.6f, transform.position.y + x * 0.15f + FireY * 0.6f, transform.position.z);
-                    Vector3 VI3 = new Vector3(transform.position.x + y * 0.15f + FireX * 0.6f, transform.position.y - x * 0.15f + FireY * 0.6f, transform.position.z);
-                    Vector3 VI4 = new Vector3(transform.position.x + y * 0.3f + FireX * 0.4f, transform.position.y - x * 0.3f + FireY * 0.4f, transform.position.z);
+                    VIs = new Vector3[4];
+                    VIs[0] = new Vector3(transform.position.x - y * 0.3f + FireX * 0.4f, transform.position.y + x * 0.3f + FireY * 0.4f, transform.position.z);
+                    VIs[1] = new Vector3(transform.position.x - y * 0.15f + FireX * 0.6f, transform.position.y + x * 0.15f + FireY * 0.6f, transform.position.z);
+                    VIs[2] = new Vector3(transform.position.x + y * 0.15f + FireX * 0.6f, transform.position.y - x * 0.15f + FireY * 0.6f, transform.position.z);
+                    VIs[3] = new Vector3(transform.position.x + y * 0.3f + FireX * 0.4f, transform.position.y - x * 0.3f + FireY * 0.4f, transform.position.z);
 
-                    Vector3 VD1 = new Vector3(x1 + axisH * 0.2f, y1 + axisV * 0.2f, 0) * _bulletSpeed;
-                    Vector3 VD2 = new Vector3(x2 + axisH * 0.2f, y2 + axisV * 0.2f, 0) * _bulletSpeed;
-                    Vector3 VD3 = new Vector3(x3 + axisH * 0.2f, y3 + axisV * 0.2f, 0) * _bulletSpeed;
-                    Vector3 VD4 = new Vector3(x4 + axisH * 0.2f, y4 + axisV * 0.2f, 0) * _bulletSpeed;
+                    VDs = new Vector3[4];
+                    VDs[0] = new Vector3(x1 + axisH * 0.2f, y1 + axisV * 0.2f, 0) * _bulletSpeed;
+                    VDs[1] = new Vector3(x2 + axisH * 0.2f, y2 + axisV * 0.2f, 0) * _bulletSpeed;
+                    VDs[2] = new Vector3(x3 + axisH * 0.2f, y3 + axisV * 0.2f, 0) * _bulletSpeed;
+                    VDs[3] = new Vector3(x4 + axisH * 0.2f, y4 + axisV * 0.2f, 0) * _bulletSpeed;
 
-
-                    BulletSetting(_poolIndex++, VI1,VD1);
-                    IndexReset();
-
-                    BulletSetting(_poolIndex++, VI2, VD2);
-                    IndexReset();
-
-                    BulletSetting(_poolIndex++, VI3, VD3);
-                    IndexReset();
-
-                    BulletSetting(_poolIndex++, VI4, VD4);
-                    IndexReset();
+                    for (int i = 0; i < 4; i++)
+                    {
+                        BulletSetting(_poolIndex++, VIs[i], VDs[i]);
+                        IndexReset();
+                    }
 
                     break;
                 }

@@ -18,6 +18,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     [SerializeField] int _bulletCnt = 1;
     [SerializeField] float _range = 8.0f;
     [SerializeField] float _bulletSpeed = 6.0f;
+    [SerializeField] int _luck = 1;
     [SerializeField] AudioClip[] _hurtSounds;
     [SerializeField] AudioClip _dieSound;
     [SerializeField] AudioClip _itemGainSound;
@@ -46,7 +47,6 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     [SerializeField] GameObject _bomb;
     [SerializeField] GameObject bullet;
     public GameObject Bullet { get { return bullet; } }
-
     //이동 애니메이션
     string upAnime = "PlayerUp";
     string downAnime = "PlayerDown";
@@ -57,15 +57,18 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     public  void Init()
     {
         gameObject.SetActive(true);
+        gameObject.transform.position = Vector3.zero;
+        GetComponent<Animator>().Play(idleAnime);
         gameObject.GetComponent<CapsuleCollider2D>().enabled = true;
-        pStat = new PlayerStat(_maxHp,_maxTotalHp, _maxHp, _speed,_power,_attackSpeed,_bulletCnt,_range,_bulletSpeed);      
+        pStat = new PlayerStat(_maxHp,_maxTotalHp, _maxHp, _speed,_power,_attackSpeed,_bulletCnt,_range,_bulletSpeed,_luck);      
     }
 
     public void LoadStart()
     {
         gameObject.SetActive(true);
+        GetComponent<Animator>().Play(idleAnime);
         gameObject.GetComponent<CapsuleCollider2D>().enabled = true;
-        pStat = new PlayerStat(_maxHp, _maxTotalHp, _maxHp, _speed, _power, _attackSpeed, _bulletCnt, _range, _bulletSpeed);
+        pStat = new PlayerStat(_maxHp, _maxTotalHp, _maxHp, _speed, _power, _attackSpeed, _bulletCnt, _range, _bulletSpeed, _luck);
     }
     public void Hitted(GameObject Enemy,float dmg)
     {
@@ -82,7 +85,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     
     void Update()
     {
-        if (GenericSingleton<GameManager>.Instance.CurrentState == GameState.EnemiesOn || GenericSingleton<GameManager>.Instance.CurrentState == GameState.EnemiesOff)
+        if ((GenericSingleton<GameManager>.Instance.CurrentState == GameState.EnemiesOn || GenericSingleton<GameManager>.Instance.CurrentState == GameState.EnemiesOff))
         {
             axisH = Input.GetAxisRaw("Horizontal");
             axisV = Input.GetAxisRaw("Vertical");
@@ -130,7 +133,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     }
     void FixedUpdate()
     {
-        if (GenericSingleton<GameManager>.Instance.CurrentState == GameState.EnemiesOn || GenericSingleton<GameManager>.Instance.CurrentState == GameState.EnemiesOff)
+        if ((GenericSingleton<GameManager>.Instance.CurrentState == GameState.EnemiesOn || GenericSingleton<GameManager>.Instance.CurrentState == GameState.EnemiesOff))
         {
             if (inDamage)
             {
@@ -196,7 +199,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     {
         if (!inDamage)
         {
-            pStat.Hp = pStat.Hp - damage;
+            pStat.SetHp(pStat.Hp - damage);
             GenericSingleton<UIBase>.Instance.HpUpdate();
             if (pStat.Hp > 0)
             {
@@ -211,28 +214,31 @@ public class PlayerCon : GenericSingleton<PlayerCon>
             else
             {
                 GenericSingleton<GameManager>.Instance.SetGameState(GameState.GameOver);
+                _player.GetComponent<SpriteRenderer>().enabled = false;
                 gameObject.GetComponent<Animator>().SetBool("GameOver",true);
                 _audioSource.PlayOneShot(_dieSound);
                 _lastEnemy = enemyname;
                 gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
-                PlayerOff();
+                Invoke("GameOver",1f);
             }
         }
     }
-   void PlayerOff()
+   void GameOver()
     {
+        Time.timeScale = 0;
         GenericSingleton<UIBase>.Instance.ShowGameOverUI(true);
         GenericSingleton<SoundManager>.Instance.SetGameOver();
         GenericSingleton<UIBase>.Instance.SetGameOverEnemy(_lastEnemy);
+        _player.GetComponent<SpriteRenderer>().enabled = true;
         gameObject.SetActive(false);
     }
     void Heal(float amount)
     {
-        pStat.Hp = pStat.Hp + amount;
+        pStat.SetHp(pStat.Hp + amount);
         _audioSource.PlayOneShot(_healSound);
         if (pStat.Hp >= pStat.MaxHp)
         {
-            pStat.Hp = pStat.MaxHp;
+            pStat.SetHp(pStat.MaxHp);
         }
         GenericSingleton<UIBase>.Instance.HpUpdate();
     }
@@ -279,10 +285,10 @@ public class PlayerCon : GenericSingleton<PlayerCon>
             itemIdx.Add(collision.GetComponent<ItemIdx>().Idx); //리스트에 아이템 인덱스저장
             im.AddItem(pStat, collision.GetComponent<ItemIdx>().Idx); //아이템 정보전달
             GenericSingleton<UIBase>.Instance.InvenDraw(collision.GetComponent<ItemIdx>().Idx);
+            GenericSingleton<UIBase>.Instance.StatUIInit();
+           //UI에 먹은아이템 표시
 
-            //UI에 먹은아이템 표시
-
-             //눈물갯수와 hp정보 전달
+           //눈물갯수와 hp정보 전달
             GenericSingleton<AttackCon>.Instance.Init();
             GenericSingleton<UIBase>.Instance.HpUpdate();
             Invoke("ItemGainEnd", 1.5f);  //애니메이션끄기

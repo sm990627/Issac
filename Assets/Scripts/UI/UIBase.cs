@@ -96,12 +96,15 @@ public class UIBase : GenericSingleton<UIBase>
         ShowMiniMap(true);
         GenerateMiniMap();
         OptionInit();
+        ShowEscUI(true);
         InvenReset();
+        ShowEscUI(false);
         ShowHpBar(true);
         ShowBossHpBar(false);
         ShowEscUI(false);
         ShowGameOverUI(false);
         HpBarInit();
+        StatUIInit();
     }
     public void Title()
     {
@@ -173,6 +176,10 @@ public class UIBase : GenericSingleton<UIBase>
     public void InvenDraw(int idx)
     {
         _escUI.GetComponent<EscUI>().DrawItem(idx);
+    }
+    public void StatUIInit()
+    {
+        _escUI.GetComponent<EscUI>().StatInit();
     }
     public void InvenReset()
     {

@@ -10,7 +10,7 @@ public class ItemManger
                 {
                     if (stat.BulletCnt < 2)
                     {
-                        stat.BulletCnt = 2;  
+                        stat.SetBulletCnt(2);  
                     }
                     break;
                 }
@@ -18,8 +18,8 @@ public class ItemManger
                 {
                     if (stat.BulletCnt < 3)
                     {
-                        stat.BulletCnt = 3;
-                        stat.AttackSpeed *= 1.8f;
+                        stat.SetBulletCnt(3);
+                        stat.SetAttackSpeed(stat.AttackSpeed * 1.5f);
                     }
                     break;
                 }
@@ -27,28 +27,33 @@ public class ItemManger
                 {
                     if (stat.BulletCnt < 4)
                     {
-                        stat.BulletCnt = 4;
+                        stat.SetBulletCnt(4);
                         if (stat.BulletCnt != 3)
                         {
-                            stat.AttackSpeed *= 2.3f;
+                            stat.SetAttackSpeed(stat.AttackSpeed * 2f);
                         }
                     }
                     break;
                 }
             case 3:
                 {
-                    stat.MaxHp += 2;
-                    stat.Hp += 2;
+                    stat.SetMaxHp(stat.MaxHp + 2);
+                    stat.SetHp(stat.Hp + 2);
                     break;
                 }
             case 4:
                 {
-                    stat.Power += 2f;
+                    stat.SetPower(stat.Power + 2);
                     break;
                 }
             case 5:
                 {
-                    stat.AttackSpeed *= 0.7f;
+                    stat.SetAttackSpeed(stat.AttackSpeed * 0.6f);
+                    break;
+                }
+            case 6:
+                {
+                    stat.SetSpeed(stat.Speed + 1);
                     break;
                 }
         }

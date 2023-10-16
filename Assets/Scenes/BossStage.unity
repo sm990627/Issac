@@ -16039,7 +16039,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2529642605252773737, guid: 4f010309183bd7349ac2f09d3e4c161b,
     type: 3}
   _jumpSpeed: 10
-  _highJumpSpeed: 15
+  _highJumpSpeed: 25
   _jumpSound:
   - {fileID: 8300000, guid: c7664b8bebf45bc47a26bbbf9ccfb6a6, type: 3}
   - {fileID: 8300000, guid: f0eb252de963c2449ae216bdb8b82a97, type: 3}

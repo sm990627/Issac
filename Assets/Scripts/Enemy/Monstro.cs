@@ -139,22 +139,23 @@ public class Monstro : MonoBehaviour
         StartCoroutine(Move(transform.position + dirVector * _speed * 10 * Time.deltaTime, 0.5f));
     }
     
+  
     IEnumerator Move(Vector3 targetPos, float moveTime)
     {
         Vector3 startPos = transform.position;
         float startTime = Time.time;
+        float endTime = startTime + moveTime;
 
-        for (int i = 0; i < 100; i++)
+        while (Time.time < endTime)
         {
             float t = (Time.time - startTime) / moveTime;
             transform.position = Vector3.Lerp(startPos, targetPos, t);
-            yield return new WaitForEndOfFrame();
+            yield return null; // 기다리지 않고 다음 프레임으로 진행
         }
 
         CheckWall();
         transform.position = targetPos;
     }
-
     void CheckWall()  //물리계산이 아닌 트랜스폼으로 애니메이션을 관리하기때문에 벽과 충돌을 하지않아서 강제로 벽뒤로 이동 막기 
     {   
         Vector3 currentPosition = transform.position;
@@ -212,7 +213,6 @@ public class Monstro : MonoBehaviour
             _isClear = true;
             GenericSingleton<SoundManager>.Instance.SetBasement();
             GenericSingleton<Doors>.Instance.TrapDoor(true);
-            GenericSingleton<GameManager>.Instance.SetGameState(GameState.EnemiesOff);
             GenericSingleton<UIBase>.Instance.ShowBossHpBar(false);
             gameObject.SetActive(false);
         }

@@ -162,7 +162,7 @@ public class Room
     {
         _sceneName = sceneName;
         _type = type;
-        _treasureIdx = Random.Range(0, 4);
+        _treasureIdx = Random.Range(0, 7);
     }
     public void TreasureItemClear()
     {

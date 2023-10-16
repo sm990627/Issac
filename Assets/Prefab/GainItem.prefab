@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3141892089993119823}
   m_Layer: 5
   m_Name: Image
-  m_TagString: Untagged
+  m_TagString: ItemUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,3 +140,6 @@ MonoBehaviour:
   - {fileID: -181763342, guid: 9445ff9fe01a0124ba1acf57050dd905, type: 3}
   - {fileID: 903525799, guid: c6d05415ad2da4749aa8be678b316886, type: 3}
   - {fileID: 1474487971, guid: cceb75c5dbb75384bb31e9f87a94d721, type: 3}
+  - {fileID: 21300000, guid: 29f0a251c15b5494cb1e2300330a9047, type: 3}
+  - {fileID: 21300000, guid: e68a9147a004ac8428ec84614a474d80, type: 3}
+  - {fileID: 21300000, guid: b4d17ac969529724db7720eb3f78c5c9, type: 3}

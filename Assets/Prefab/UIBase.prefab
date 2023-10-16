@@ -4993,7 +4993,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3883281506485399522
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5069,7 +5069,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7072732423645959973
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5273,7 +5273,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7823148294808563269
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5501,7 +5501,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4788926605680122227
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5577,7 +5577,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5506468479325891096
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5775,7 +5775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1923435655705171104
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6362,9 +6362,9 @@ RectTransform:
   m_Father: {fileID: 2680124649994808400}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 69, y: 284}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -140, y: 70}
   m_SizeDelta: {x: 7, y: 7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2742905258401657773
@@ -6564,7 +6564,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -61, y: -32}
+  m_AnchoredPosition: {x: -60, y: -30}
   m_SizeDelta: {x: 90.38462, y: 26.923079}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1500365871501493049
@@ -6622,7 +6622,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7368167825367891345
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6850,7 +6850,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1174064921419351250
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7022,7 +7022,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -61, y: 68}
+  m_AnchoredPosition: {x: -60, y: 70}
   m_SizeDelta: {x: 67.30769, y: 34.615387}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1818543956958072515
@@ -7267,11 +7267,12 @@ MonoBehaviour:
   _bossIntro: {fileID: 755432245}
   _bossHpBar: {fileID: 470506702670410740}
   _miniMapUI: {fileID: 896242708}
-  _gameOverUI: {fileID: 0}
+  _gameOverUI: {fileID: 3021483104963626694}
   _blackScreen: {fileID: 59342320}
   _uiSound:
   - {fileID: 8300000, guid: a77eb5c90396034408e04cb672c2919c, type: 3}
   - {fileID: 8300000, guid: a83aa1d64a4391e43be8eb1aa2518e85, type: 3}
+  - {fileID: 8300000, guid: 22c3dbf498bc1d846937c7119f895d8b, type: 3}
 --- !u!82 &338758168
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7470,6 +7471,54 @@ MonoBehaviour:
   - {fileID: 876261}
   - {fileID: 1087096720}
   _arrow: {fileID: 1344848722}
+  _speed:
+  - {fileID: 572162586}
+  - {fileID: 567231636}
+  - {fileID: 594137243}
+  - {fileID: 1722437019}
+  - {fileID: 1001856051}
+  - {fileID: 302122198}
+  - {fileID: 633083730}
+  _range:
+  - {fileID: 721555434}
+  - {fileID: 612397521}
+  - {fileID: 1049466996}
+  - {fileID: 1802204935}
+  - {fileID: 867665740}
+  - {fileID: 1109066141}
+  - {fileID: 410630495}
+  _attackSpeed:
+  - {fileID: 1701416627}
+  - {fileID: 1958245933}
+  - {fileID: 1793099804}
+  - {fileID: 1761135015}
+  - {fileID: 993349311}
+  - {fileID: 1575515608}
+  - {fileID: 1814939378}
+  _bulletSpeed:
+  - {fileID: 1856045905}
+  - {fileID: 719545061}
+  - {fileID: 1687580727}
+  - {fileID: 1121118572}
+  - {fileID: 1435644554}
+  - {fileID: 1851006453}
+  - {fileID: 1241379810}
+  _damage:
+  - {fileID: 987912450}
+  - {fileID: 1833077003}
+  - {fileID: 1068993828}
+  - {fileID: 451526686}
+  - {fileID: 1760031243}
+  - {fileID: 1891912829}
+  - {fileID: 676439378}
+  _luck:
+  - {fileID: 1870908369}
+  - {fileID: 1226990430}
+  - {fileID: 1421090287}
+  - {fileID: 772123252}
+  - {fileID: 1022578317}
+  - {fileID: 342961992}
+  - {fileID: 1828911410}
 --- !u!1 &7499531858290501923
 GameObject:
   m_ObjectHideFlags: 0
@@ -7977,7 +8026,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1609816018418254650
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8053,7 +8102,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2055504303761401314
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8356,7 +8405,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2651eba004ab4d48a24046902c8b90d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _menus: []
-  _arrow: {fileID: 0}
-  _sfx: []
-  _musics: []
+  _menus:
+  - {fileID: 1891192888417966884}
+  - {fileID: 4526453337438773541}
+  _arrow: {fileID: 313408470555359190}
+  _sfx:
+  - {fileID: 587227014520671876}
+  - {fileID: 1382570118594278679}
+  - {fileID: 6957761129008560032}
+  - {fileID: 3625121849004027963}
+  - {fileID: 8369247393497861876}
+  - {fileID: 1587810201761061743}
+  - {fileID: 361305743733156011}
+  - {fileID: 7994931995642009389}
+  - {fileID: 2576892256503761002}
+  - {fileID: 975390577521438243}
+  _musics:
+  - {fileID: 4680682290992350062}
+  - {fileID: 989447512669809290}
+  - {fileID: 3882768007578745414}
+  - {fileID: 87060550366472042}
+  - {fileID: 2340492184733522048}
+  - {fileID: 206151815303744290}
+  - {fileID: 2336529686415462160}
+  - {fileID: 8099814996192641999}
+  - {fileID: 6821663303074695121}
+  - {fileID: 5140987696332491189}

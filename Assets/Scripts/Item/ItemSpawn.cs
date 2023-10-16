@@ -4,6 +4,7 @@ using UnityEngine;
 public class ItemSpawn : MonoBehaviour
 {
     [SerializeField]GameObject[] _items;
+    [SerializeField]GameObject  _test;
     void Start()
     {
 
@@ -17,6 +18,17 @@ public class ItemSpawn : MonoBehaviour
         }
 
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            _test.SetActive(true);
+        }
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            _test.SetActive(false);
+        }
+    }
 
-    
+
 }

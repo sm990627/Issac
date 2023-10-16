@@ -35,6 +35,8 @@ public class GameManager : GenericSingleton<GameManager>
 
             case GameState.GameStart:
                 {
+                    string filePath = Path.Combine(Application.persistentDataPath, "GameData.json");
+                    if (File.Exists(filePath)) File.Delete(filePath);
                     GameStart();
                 }
                 break;
@@ -69,7 +71,7 @@ public class GameManager : GenericSingleton<GameManager>
 
             case GameState.GameOver:
                 {
-                    Time.timeScale = 0;
+                    Time.timeScale = 1;
                     string filePath = Path.Combine(Application.persistentDataPath, "GameData.json");
                     if (File.Exists(filePath)) File.Delete(filePath);
                 }

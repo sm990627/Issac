@@ -76,11 +76,13 @@ public class EscUI : MonoBehaviour
     {
         Debug.Log("√ ±‚»≠");
         GameObject[] _items = GameObject.FindGameObjectsWithTag("ItemUI" );
-        //Debug.Log(_items[0].name);
         foreach (GameObject _item in _items)
-        {
-            
+        {            
             Destroy(_item);
+        }
+        foreach(var item in GenericSingleton<PlayerCon>.Instance.ItemIdx)
+        {
+            DrawItem(item);
         }
     }
     public void StatInit()

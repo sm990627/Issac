@@ -101,11 +101,11 @@ public class UIBase : GenericSingleton<UIBase>
         ShowEscUI(false);
         ShowHpBar(true);
         ShowBossHpBar(false);
-        ShowEscUI(false);
         ShowGameOverUI(false);
         HpBarInit();
         StatUIInit();
     }
+
     public void Title()
     {
         StartCoroutine(TitleFade(0.3f, 1f));

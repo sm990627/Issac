@@ -165,10 +165,6 @@ public class GameManager : GenericSingleton<GameManager>
                         Restart();
                     }
                 }
-                if (Input.GetKey(KeyCode.L))
-                {
-                    RoomClear();
-                }
                 if (Input.GetKeyUp(KeyCode.R))
                 {
                     _restartTimer = 0;

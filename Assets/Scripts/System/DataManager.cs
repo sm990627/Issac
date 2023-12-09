@@ -14,6 +14,7 @@ public class DataManager : GenericSingleton<DataManager>
         data.SavePlayerStatData(GenericSingleton<PlayerCon>.Instance.Pstat);
         data.SaveRoomData(GenericSingleton<RoomManager>.Instance.Rooms);
         data.SaveCurrentPos(GenericSingleton<StageManager>.Instance.CurrentPos, GenericSingleton<PlayerCon>.Instance.gameObject.transform.position);
+        data.SaveItemData(GenericSingleton<PlayerCon>.Instance.ItemIdx);
         string json = JsonUtility.ToJson(_gameDatas);
         string filePath = Path.Combine(Application.persistentDataPath, "GameData.json");
         File.WriteAllText(filePath, json);
@@ -30,6 +31,7 @@ public class DataManager : GenericSingleton<DataManager>
             GenericSingleton<RoomManager>.Instance.LoadRoomData(data.RoomDatas);
             GenericSingleton<StageManager>.Instance.LoadCurrentPos(data.CurrentPos,data.PlayerPos);
             GenericSingleton<PlayerCon>.Instance.Pstat.LoadPlayerStat(data.PlayerStatData);
+            GenericSingleton<PlayerCon>.Instance.LoadItemData(data.Items);
         }
 
     }
@@ -50,6 +52,7 @@ public class GameData
     public PlayerStatData PlayerStatData = new PlayerStatData();
     public Vector2 CurrentPos;
     public Vector2 PlayerPos;
+    public List<int> Items;
 
 
     public void SavePlayerStatData(PlayerStat Pstat)
@@ -77,6 +80,10 @@ public class GameData
     {
         CurrentPos = pos;
         PlayerPos = Ppos;
+    }
+    public void SaveItemData(List<int> items)
+    {
+        Items = items;
     }
 
 

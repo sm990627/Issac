@@ -33,7 +33,9 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     bool itemGain = false;
 
     GameObject newItem;
-    List<int> itemIdx = new List<int>();
+    List<int> _itemIdx = new List<int>();
+    public List<int> ItemIdx { get { return _itemIdx; } }
+    
 
     //사용할 컴포넌트
     Rigidbody2D _rbody;
@@ -60,7 +62,8 @@ public class PlayerCon : GenericSingleton<PlayerCon>
         gameObject.transform.position = Vector3.zero;
         GetComponent<Animator>().Play(idleAnime);
         gameObject.GetComponent<CapsuleCollider2D>().enabled = true;
-        pStat = new PlayerStat(_maxHp,_maxTotalHp, _maxHp, _speed,_power,_attackSpeed,_bulletCnt,_range,_bulletSpeed,_luck);      
+        pStat = new PlayerStat(_maxHp,_maxTotalHp, _maxHp, _speed,_power,_attackSpeed,_bulletCnt,_range,_bulletSpeed,_luck);   
+        _itemIdx.Clear();
     }
 
     public void LoadStart()
@@ -122,10 +125,6 @@ public class PlayerCon : GenericSingleton<PlayerCon>
                 }
             }
 
-            if (Input.GetButtonDown("Bomb"))
-            {
-                SetBomb();
-            }
 
         }
        
@@ -282,7 +281,7 @@ public class PlayerCon : GenericSingleton<PlayerCon>
             _audioSource.PlayOneShot(_itemGainSound);
             collision.transform.position = new Vector2(transform.position.x, transform.position.y + 0.2f); //아이템 머리위로
             gameObject.GetComponent<Animator>().SetBool("ItemGain",true);
-            itemIdx.Add(collision.GetComponent<ItemIdx>().Idx); //리스트에 아이템 인덱스저장
+            _itemIdx.Add(collision.GetComponent<ItemIdx>().Idx); //리스트에 아이템 인덱스저장
             im.AddItem(pStat, collision.GetComponent<ItemIdx>().Idx); //아이템 정보전달
             GenericSingleton<UIBase>.Instance.InvenDraw(collision.GetComponent<ItemIdx>().Idx);
             GenericSingleton<UIBase>.Instance.StatUIInit();
@@ -326,6 +325,10 @@ public class PlayerCon : GenericSingleton<PlayerCon>
     private void OnDestroy()
     {
         GenericSingleton<UIBase>.Instance.EffectVolume -= EffectSound;
+    }
+    public void LoadItemData(List<int> items)
+    {
+        _itemIdx = items;
     }
    
 

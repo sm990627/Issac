@@ -28,7 +28,7 @@ public  class PlayerStat
      public int Luck { get { return _luck; } }  
 
      float _bulletSpeed = 6.0f;
-     public float BulletSpeed { get { return _bulletSpeed; } set { _bulletSpeed = value; } }
+     public float BulletSpeed { get { return _bulletSpeed; }  }
      public PlayerStat(float maxHp, float maxTotalHp, float hp, float speed, float power, float attackSpeed, int bulletCnt, float range, float bulletSpeed, int luck)
      {
         _maxHp = maxHp;
